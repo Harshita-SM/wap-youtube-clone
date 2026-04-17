@@ -1,0 +1,69 @@
+// We are exporting this data so other components can import it
+export const mockVideos = [
+    {
+        id: "1",
+        title: "React JS Full Course for Beginners | 2026",
+        thumbnail: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2670&auto=format&fit=crop",
+        channelName: "Code Mastery",
+        channelAvatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
+        views: "1.2M views",
+        uploadDate: "2 days ago",
+        category: "Learning",
+        description: "Learn React from scratch in this comprehensive tutorial. We cover Hooks, Components, Props, and routing!"
+    },
+    {
+        id: "2",
+        title: "Top 10 PC Builds for Gaming",
+        thumbnail: "https://images.unsplash.com/photo-1587202372634-32705e3bf49c?q=80&w=2670&auto=format&fit=crop",
+        channelName: "Tech Haven",
+        channelAvatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=150&q=80",
+        views: "450K views",
+        uploadDate: "1 week ago",
+        category: "Gaming",
+        description: "Looking to build a new gaming rig? Here are the top 10 setups for every budget."
+    },
+    {
+        id: "3",
+        title: "Lofi Hip Hop Radio - Beats to Relax/Study to",
+        thumbnail: "https://images.unsplash.com/photo-1516280440502-d2f623631bb5?q=80&w=2670&auto=format&fit=crop",
+        channelName: "Chill Beats",
+        channelAvatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80",
+        views: "10M views",
+        uploadDate: "Streaming Now",
+        category: "Music",
+        description: "24/7 lofi hip hop radio. Perfect for studying, working, or just relaxing."
+    },
+    {
+        id: "4",
+        title: "Breaking News: Major Tech Announcements",
+        thumbnail: "https://images.unsplash.com/photo-1495020689067-958852a7765e?q=80&w=2669&auto=format&fit=crop",
+        channelName: "Global News",
+        channelAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
+        views: "89K views",
+        uploadDate: "4 hours ago",
+        category: "News",
+        description: "Live coverage of the latest technology releases and announcements happening globally today."
+    },
+    {
+        id: "5",
+        title: "React Router v7 Tutorial - Navigation Explained",
+        thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2670&auto=format&fit=crop",
+        channelName: "Web Dev Simplified",
+        channelAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80",
+        views: "215K views",
+        uploadDate: "3 weeks ago",
+        category: "Learning",
+        description: "Understanding routing is critical for modern web apps. Let's break down React Router."
+    },
+    {
+        id: "6",
+        title: "10 Minute Daily Workout at Home (No Equipment)",
+        thumbnail: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2670&auto=format&fit=crop",
+        channelName: "FitLife",
+        channelAvatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80",
+        views: "3.5M views",
+        uploadDate: "1 year ago",
+        category: "Sports",
+        description: "Stay in shape directly from your living room. No equipment needed!"
+    }
+];
