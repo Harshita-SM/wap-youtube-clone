@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 
-const categories = [
+const CATEGORIES = [
   "All",
   "Gaming",
   "Music",
@@ -17,18 +17,28 @@ const categories = [
 function CategoryBar() {
     const [active, setActive] = useState("All");
 
+    const handleCategoryClick = useCallback((category) => {
+        setActive(category);
+        // TODO: Filter videos by category
+    }, []);
+
+    const categoryButtons = useMemo(() => (
+        CATEGORIES.map((category) => (
+            <button 
+                key={category}
+                className={`category-button ${active === category ? 'active' : ''}`}
+                onClick={() => handleCategoryClick(category)}
+                aria-pressed={active === category}
+            >
+                {category}
+            </button>
+        ))
+    ), [active, handleCategoryClick]);
+
     return (
-        <div className='category-bar'>
-            {categories.map((category, index) => (
-                <button 
-                    key={index} 
-                    className={`category-button ${active === category ? 'active' : ''}`}
-                    onClick={() => setActive(category)}
-                >
-                    {category}
-                </button>
-            ))}
-        </div>
+        <nav className='category-bar' role="tablist" aria-label="Video categories">
+            {categoryButtons}
+        </nav>
     );
 }
 
