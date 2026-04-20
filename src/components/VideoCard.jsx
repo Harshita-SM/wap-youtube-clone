@@ -8,11 +8,13 @@ function VideoCard({ video }) {
         <Link to={`/watch/${video.id}`} className="video-card-link">
             <div className="video-card">
                 {/* Video Thumbnail */}
-                <div className="thumbnail-container">
+                <div className="thumbnail-container" style={{ position: 'relative' }}>
                     <img 
                         src={video.thumbnail} 
                         alt={video.title} 
                         className="video-thumbnail" 
+                        loading="lazy"
+                        title={video.title}
                     />
                 </div>
 
@@ -20,8 +22,9 @@ function VideoCard({ video }) {
                 <div className="video-details">
                     <img 
                         src={video.channelAvatar} 
-                        alt={video.channelName} 
+                        alt={`${video.channelName} avatar`} 
                         className="channel-avatar" 
+                        loading="lazy"
                     />
                     <div className="video-text">
                         <h3 className="video-title">{video.title}</h3>
