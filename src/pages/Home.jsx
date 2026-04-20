@@ -1,11 +1,17 @@
 import React from 'react';
 import CategoryBar from '../components/CategoryBar';
+import VideoCard from '../components/VideoCard';
+import { mockVideos } from '../data/mockData';
 
 function Home() {
     return (
-        <div>
+        <div className="home-page">
             <CategoryBar />
-            <h2>Recommended videos will go here</h2>
+            <div className="video-grid">
+                {mockVideos.map(video => (
+                    <VideoCard key={video.id} video={video} />
+                ))}
+            </div>
         </div>
     );
 }
