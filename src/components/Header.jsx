@@ -1,67 +1,54 @@
-import React, { useState, useCallback } from 'react';
-import {Menu, Search , Video, Bell, User} from 'lucide-react';
+import React, { useState } from 'react';
+import { Menu, Search, Video, Bell, User } from 'lucide-react';
 
 function Header() {
+    // State to keep track of what the user is typing in the search bar
     const [searchQuery, setSearchQuery] = useState('');
-    
-    const handleSearch = useCallback((e) => {
-        e.preventDefault();
-        if (searchQuery.trim()) {
-            console.log('Searching for:', searchQuery);
-            // TODO: Navigate to search results page
-        }
-    }, [searchQuery]);
 
-    const handleKeyPress = useCallback((e) => {
-        if (e.key === 'Enter') {
-            handleSearch(e);
+    // Function to handle the search action
+    const handleSearch = (e) => {
+        e.preventDefault(); // Prevents the page from refreshing on form submit
+        if (searchQuery.trim()) {
+            alert(`Searching for: ${searchQuery}`);
+            // In a real app, you would navigate to a search results page here
         }
-    }, [handleSearch]);
+    };
 
     return (
-        <header className='header' role="banner">
+        <header className='header'>
+            {/* Left Section: Menu Icon and YouTube Logo */}
             <div className='header-left'>
-                <button className='menu-button' aria-label="Toggle menu">
-                    <Menu className='icon'/>
-                </button>
+                <Menu className='icon' />
                 <img 
                     src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" 
-                    alt="Youtube Logo"  
+                    alt="YouTube Logo" 
                     className='header-logo'
                 />
             </div>
 
+            {/* Center Section: Search Bar */}
             <form className='header-center' onSubmit={handleSearch}>
                 <input 
                     type="text" 
                     placeholder='Search' 
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    aria-label="Search"
+                    onChange={(e) => setSearchQuery(e.target.value)} // Update state as user types
                 />
-                <button 
-                    type="submit"
-                    className='search-button'
-                    aria-label="Search"
-                > 
-                    <Search size={20}/> 
+                <button type="submit" className='search-button'>
+                    <Search size={20} />
                 </button>
             </form>
 
-            <div className='header-right'> 
-                <button aria-label="Create" className='icon-button'>
-                    <Video className='icon'/>
-                </button>
-                <button aria-label="Notifications" className='icon-button'>
-                    <Bell className='icon' />
-                </button>
-                <button aria-label="Account" className='icon-button'>
-                    <User className='icon'/>
-                </button>
+            {/* Right Section: Icons (Create, Notifications, User) */}
+            <div className='header-right'>
+                <Video className='icon' />
+                <Bell className='icon' />
+                <div className='user-icon-container'>
+                    <User className='icon' />
+                </div>
             </div>
         </header>
-    )
+    );
 }
 
 export default Header;
