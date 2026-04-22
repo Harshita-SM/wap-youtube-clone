@@ -4,7 +4,7 @@ Welcome to our YouTube Clone!
 
 ---
 
-## 🚀 Why we built this
+## 🚀 Why we built this till now
 We wanted to challenge ourselves with more than just a "Todo List." Building a video-sharing platform (even a clone!) helped us master:
 - **Component Architecture**: Breaking down a complex UI into tiny, reusable pieces.
 - **Dynamic Routing**: Using `react-router-dom` to switch between Home and Watch pages smoothly.
