@@ -49,11 +49,34 @@ body {
   cursor: pointer;
 }
 
-.header-center {
+.header-search-container {
   display: flex;
   align-items: center;
   flex: 0 1 728px;
   margin: 0 40px;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.mic-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--hover-bg);
+  margin-left: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.mic-button:hover {
+  background-color: var(--border);
 }
 
 .header-center input {

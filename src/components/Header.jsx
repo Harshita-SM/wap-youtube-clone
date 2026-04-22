@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, Search, Video, Bell, User } from 'lucide-react';
+import { Menu, Search, Video, Bell, User, Mic } from 'lucide-react';
 
 function Header() {
     // State to keep track of what the user is typing in the search bar
@@ -27,17 +27,22 @@ function Header() {
             </div>
 
             {/* Center Section: Search Bar */}
-            <form className='header-center' onSubmit={handleSearch}>
-                <input 
-                    type="text" 
-                    placeholder='Search' 
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)} // Update state as user types
-                />
-                <button type="submit" className='search-button'>
-                    <Search size={20} />
-                </button>
-            </form>
+            <div className='header-search-container'>
+                <form className='header-center' onSubmit={handleSearch}>
+                    <input 
+                        type="text" 
+                        placeholder='Search' 
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)} // Update state as user types
+                    />
+                    <button type="submit" className='search-button'>
+                        <Search size={20} />
+                    </button>
+                </form>
+                <div className='mic-button' title='Search with your voice'>
+                    <Mic size={20} />
+                </div>
+            </div>
 
             {/* Right Section: Icons (Create, Notifications, User) */}
             <div className='header-right'>
