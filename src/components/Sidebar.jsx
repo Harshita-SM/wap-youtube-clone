@@ -1,7 +1,8 @@
 import React from 'react';
 import { 
     Home, Compass, PlaySquare, Clock, ThumbsUp, History, UserSquare, 
-    Flame, Music, Gamepad2, Newspaper, Trophy, Settings, Flag, HelpCircle, MessageSquare, Video
+    Flame, Music, Gamepad2, Newspaper, Trophy, Settings, Flag, HelpCircle, MessageSquare, Video,
+    ListVideo, Download, User, ChevronRight
 } from 'lucide-react';
 
 const primaryItems = [
@@ -11,10 +12,13 @@ const primaryItems = [
 ];
 
 const secondaryItems = [
+    { id: 'your-channel', icon: User, label: 'Your channel' },
     { id: 'history', icon: History, label: 'History' },
-    { id: 'your-videos', icon: UserSquare, label: 'Your Videos' },
+    { id: 'playlists', icon: ListVideo, label: 'Playlists' },
+    { id: 'your-videos', icon: UserSquare, label: 'Your videos' },
     { id: 'watch-later', icon: Clock, label: 'Watch Later' },
-    { id: 'liked', icon: ThumbsUp, label: 'Liked Videos' },
+    { id: 'liked', icon: ThumbsUp, label: 'Liked videos' },
+    { id: 'downloads', icon: Download, label: 'Downloads' },
 ];
 
 const exploreItems = [
@@ -47,8 +51,8 @@ function Sidebar() {
             <hr className="sidebar-divider" style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '12px 0' }} />
 
             <div className="sidebar-section">
-                <div style={{ padding: '8px 12px', fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                    You <span style={{ marginLeft: '8px', fontSize: '12px' }}>{'>'}</span>
+                <div className="sidebar-item" style={{ fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px', paddingLeft: '12px' }}>
+                    You <ChevronRight size={18} style={{ marginTop: '2px' }} />
                 </div>
                 {secondaryItems.map((item) => (
                     <div key={item.id} className='sidebar-item'>
