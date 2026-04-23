@@ -9,6 +9,7 @@ import SearchResults from './pages/SearchResults';
 import Channel from './pages/Channel';
 import Library from './pages/Library';
 import Shorts from './pages/Shorts';
+import Subscriptions from './pages/Subscriptions';
 
 const appLayoutStyle = {
   display: 'flex',
@@ -37,6 +38,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/shorts" element={<Shorts />} />
+            <Route path="/subscriptions" element={<Subscriptions />} />
             <Route path="/watch/:id" element={<Watch />} />
             <Route path="/search/:query" element={<SearchResults />} />
             <Route path="/channel/:id" element={<Channel />} />

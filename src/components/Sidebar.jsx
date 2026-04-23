@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { 
     HomeIcon, ShortsIcon, SubscriptionsIcon, HistoryIcon, UserIcon, LibraryIcon,
     PlaylistsIcon, YourVideosIcon, WatchLaterIcon, LikedVideosIcon, DownloadsIcon,
@@ -8,18 +8,18 @@ import {
 } from './YouTubeIcons';
 
 const primaryItems = [
-    { id: 'home', icon: HomeIcon, label: 'Home' },
-    { id: 'shorts', icon: ShortsIcon, label: 'Shorts' },
-    { id: 'subscriptions', icon: SubscriptionsIcon, label: 'Subscriptions' },
+    { id: 'home', icon: HomeIcon, label: 'Home', path: '/' },
+    { id: 'shorts', icon: ShortsIcon, label: 'Shorts', path: '/shorts' },
+    { id: 'subscriptions', icon: SubscriptionsIcon, label: 'Subscriptions', path: '/subscriptions' },
 ];
 
 const secondaryItems = [
-    { id: 'your-channel', icon: UserIcon, label: 'Your channel' },
-    { id: 'history', icon: HistoryIcon, label: 'History' },
-    { id: 'playlists', icon: PlaylistsIcon, label: 'Playlists' },
+    { id: 'your-channel', icon: UserIcon, label: 'Your channel', path: '/channel/1' },
+    { id: 'history', icon: HistoryIcon, label: 'History', path: '/library' },
+    { id: 'playlists', icon: PlaylistsIcon, label: 'Playlists', path: '/library' },
     { id: 'your-videos', icon: YourVideosIcon, label: 'Your videos' },
     { id: 'watch-later', icon: WatchLaterIcon, label: 'Watch Later' },
-    { id: 'liked', icon: LikedVideosIcon, label: 'Liked videos' },
+    { id: 'liked', icon: LikedVideosIcon, label: 'Liked videos', path: '/library' },
     { id: 'downloads', icon: DownloadsIcon, label: 'Downloads' },
 ];
 
@@ -40,8 +40,16 @@ const settingItems = [
 
 function Sidebar({ isOpen }) {
     const navigate = useNavigate();
+    const location = useLocation();
 
     if (!isOpen) return null;
+
+    const isActive = (path) => {
+        if (!path) return false;
+        if (path === '/' && location.pathname === '/') return true;
+        if (path !== '/' && location.pathname.startsWith(path)) return true;
+        return false;
+    };
 
     return (
         <aside className='sidebar'>
@@ -49,11 +57,8 @@ function Sidebar({ isOpen }) {
                 {primaryItems.map((item) => (
                     <div 
                         key={item.id} 
-                        className={`sidebar-item ${item.id === 'home' ? 'active' : ''}`}
-                        onClick={() => {
-                            if (item.id === 'home') navigate('/');
-                            if (item.id === 'shorts') navigate('/shorts');
-                        }}
+                        className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
+                        onClick={() => navigate(item.path)}
                     >
                         <item.icon className='sidebar-icon' size={20} />
                         <span className='sidebar-text' style={{ fontSize: '14px' }}>{item.label}</span>
@@ -70,10 +75,9 @@ function Sidebar({ isOpen }) {
                 {secondaryItems.map((item) => (
                     <div 
                         key={item.id} 
-                        className='sidebar-item'
+                        className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
                         onClick={() => {
-                            if (item.id === 'your-channel') navigate('/channel/1');
-                            if (['history', 'playlists', 'liked'].includes(item.id)) navigate('/library');
+                            if (item.path) navigate(item.path);
                         }}
                     >
                         <item.icon className='sidebar-icon' size={20} />
