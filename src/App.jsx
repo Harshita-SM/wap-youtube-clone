@@ -8,6 +8,7 @@ import Watch from './pages/Watch';
 import SearchResults from './pages/SearchResults';
 import Channel from './pages/Channel';
 import Library from './pages/Library';
+import Shorts from './pages/Shorts';
 
 const appLayoutStyle = {
   display: 'flex',
@@ -35,6 +36,7 @@ function App() {
         <div style={contentStyle}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/shorts" element={<Shorts />} />
             <Route path="/watch/:id" element={<Watch />} />
             <Route path="/search/:query" element={<SearchResults />} />
             <Route path="/channel/:id" element={<Channel />} />

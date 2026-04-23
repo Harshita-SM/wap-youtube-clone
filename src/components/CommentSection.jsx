@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ThumbsUpIcon, ThumbsDownIcon } from './YouTubeIcons';
 
 // Some mock comments for display
 const initialComments = [
@@ -83,10 +84,13 @@ function CommentSection() {
                                 <span className="comment-date" style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{comment.date}</span>
                             </div>
                             <p className="comment-text" style={{ margin: 0, fontSize: '14px' }}>{comment.text}</p>
-                            <div className="comment-actions" style={{ display: 'flex', gap: '16px', marginTop: '8px', fontSize: '12px', color: 'var(--text-secondary)', cursor: 'pointer' }}>
-                                <span>👍 {comment.likes}</span>
-                                <span>👎</span>
-                                <span className="reply-btn">REPLY</span>
+                            <div className="comment-actions" style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '8px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <ThumbsUpIcon size={16} />
+                                    <span style={{ fontSize: '12px', color: '#606060' }}>{comment.likes}</span>
+                                </div>
+                                <ThumbsDownIcon size={16} />
+                                <span className="reply-btn" style={{ fontSize: '12px', fontWeight: '500', cursor: 'pointer', marginLeft: '8px' }}>REPLY</span>
                             </div>
                         </div>
                     </div>

@@ -26,7 +26,7 @@ We wanted to challenge ourselves with more than just a "Todo List." Building a v
 ## 🛠️ Built with hardwork &...
 - **React**: Our favorite UI library.
 - **Vite**: For that lightning-fast development experience.
-- **Lucide-React**: To keep our icons looking crisp and professional.
+- **Custom SVG Icons**: Authentic YouTube-style icons for a realistic user experience.
 - **Vanilla CSS**: Hand-crafted styles to get that perfect YouTube feel.
 
 ---
@@ -37,5 +37,4 @@ This project was a collaborative effort by **Harshita**, **Manoj Ahire**, and **
 Feel free to explore the code, give it a star ⭐ if you like it, and stay tuned for more updates!
 
 ---
-
-Test commit Thu Apr 23 00:18:58 IST 2026
+Made with ❤️ by the Dream Team. Keep Coding! 🚀
