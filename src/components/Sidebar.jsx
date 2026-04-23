@@ -52,6 +52,7 @@ function Sidebar({ isOpen }) {
                         className={`sidebar-item ${item.id === 'home' ? 'active' : ''}`}
                         onClick={() => {
                             if (item.id === 'home') navigate('/');
+                            if (item.id === 'shorts') navigate('/shorts');
                         }}
                     >
                         <item.icon className='sidebar-icon' size={20} />

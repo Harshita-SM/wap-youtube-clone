@@ -187,6 +187,12 @@ export const MoreIcon = ({ size = 24, className = "" }) => (
   </svg>
 );
 
+export const MessageSquareIcon = ({ size = 24, className = "" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 2.98.97 4.29L1 23l4.71-1.97C7.02 21.64 8.46 22 10 22h2c5.52 0 10-4.48 10-10S17.52 2 12 2zM12 20h-2c-1.38 0-2.67-.33-3.81-.92L3.59 20.25l1.17-2.82C4.33 16.67 4 15.38 4 14c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z" />
+  </svg>
+);
+
 export const ChevronRightIcon = ({ size = 24, className = "" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
     <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
