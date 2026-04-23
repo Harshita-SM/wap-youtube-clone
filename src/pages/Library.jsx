@@ -1,25 +1,30 @@
 import React from 'react';
 import VideoCard from '../components/VideoCard';
-import { mockVideos } from '../data/mockData';
 import { HistoryIcon, WatchLaterIcon, ThumbsUpIcon } from '../components/YouTubeIcons';
+import { useApp } from '../AppContext';
 
+/**
+ * Library Page - Now powered by Global State!
+ * This page displays the user's actual interactions tracked by AppContext.
+ */
 function Library() {
-    // Just mock subsets of videos for different sections
-    const historyVideos = mockVideos.slice(0, 4);
-    const watchLaterVideos = mockVideos.slice(2, 5);
-    const likedVideos = mockVideos.slice(1, 6);
+    const { history, likedVideos } = useApp();
 
-    const renderSection = (title, icon, videos) => (
+    const renderSection = (title, icon, videos, emptyMessage) => (
         <div style={{ marginBottom: '32px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
                 {icon}
                 <h2 style={{ margin: 0, fontSize: '18px' }}>{title}</h2>
             </div>
-            <div className="video-grid">
-                {videos.map(video => (
-                    <VideoCard key={`${title}-${video.id}`} video={video} />
-                ))}
-            </div>
+            {videos.length > 0 ? (
+                <div className="video-grid">
+                    {videos.map(video => (
+                        <VideoCard key={`${title}-${video.id}`} video={video} />
+                    ))}
+                </div>
+            ) : (
+                <p style={{ color: 'var(--text-secondary)', padding: '20px 0' }}>{emptyMessage}</p>
+            )}
         </div>
     );
 
@@ -27,13 +32,31 @@ function Library() {
         <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
             <h1 style={{ marginBottom: '32px', fontSize: '24px' }}>Library</h1>
             
-            {renderSection("History", <HistoryIcon size={24} />, historyVideos)}
+            {renderSection(
+                "History", 
+                <HistoryIcon size={24} />, 
+                history, 
+                "Videos you watch will show up here."
+            )}
+            
             <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '24px 0' }} />
             
-            {renderSection("Watch Later", <WatchLaterIcon size={24} />, watchLaterVideos)}
+            {renderSection(
+                "Liked Videos", 
+                <ThumbsUpIcon size={24} />, 
+                likedVideos, 
+                "Use the like button on videos to save them here."
+            )}
+            
             <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '24px 0' }} />
             
-            {renderSection("Liked Videos", <ThumbsUpIcon size={24} />, likedVideos)}
+            <div style={{ opacity: 0.6 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                    <WatchLaterIcon size={24} />
+                    <h2 style={{ margin: 0, fontSize: '18px' }}>Watch Later</h2>
+                </div>
+                <p>Features coming soon: Watch Later persistence.</p>
+            </div>
         </div>
     );
 }

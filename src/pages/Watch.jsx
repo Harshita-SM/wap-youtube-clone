@@ -4,6 +4,7 @@ import RelatedVideos from '../components/RelatedVideos';
 import CommentSection from '../components/CommentSection';
 import { mockVideos } from '../data/mockData';
 import { ThumbsUpIcon, ThumbsDownIcon, ShareIcon, MoreIcon } from '../components/YouTubeIcons';
+import { useApp } from '../AppContext';
 
 /**
  * Watch Page Component
@@ -14,17 +15,19 @@ function Watch() {
     // 1. Get the video ID from the URL (e.g., /watch/1)
     const { id } = useParams();
     
-    // 2. State to track if the user is subscribed (simple toggle)
-    const [isSubscribed, setIsSubscribed] = useState(false);
+    // 2. Access Global State from AppContext
+    const { addToHistory, toggleLike, isLiked, toggleSubscription, isSubscribed } = useApp();
 
     // 3. Find the specific video data from our mock database using the ID
     const video = mockVideos.find(v => v.id === id);
 
-    // 4. Optimization: Scroll to the top of the page whenever the video ID changes
-    // This provides a better user experience when clicking on a related video.
+    // 4. Optimization: Scroll to the top and add to history
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [id]);
+        if (video) {
+            addToHistory(video);
+        }
+    }, [id, video]);
 
     // 5. If the video doesn't exist (wrong ID), show a simple error message
     if (!video) {
@@ -34,6 +37,9 @@ function Watch() {
             </div>
         );
     }
+
+    const liked = isLiked(video.id);
+    const subscribed = isSubscribed(video.channelName);
 
     return (
         <div className="watch-container">
@@ -68,29 +74,42 @@ function Watch() {
                                 <span style={{ fontSize: '12px', color: '#606060' }}>1.2M subscribers</span>
                             </div>
                             
-                            {/* Subscribe Button Toggle */}
+                            {/* Subscribe Button Toggle with Global State */}
                             <button 
-                                className={`subscribe-btn ${isSubscribed ? 'subscribed' : ''}`}
-                                onClick={() => setIsSubscribed(!isSubscribed)}
+                                className={`subscribe-btn ${subscribed ? 'subscribed' : ''}`}
+                                onClick={() => toggleSubscription(video.channelName)}
                                 style={{
                                     marginLeft: '20px',
                                     padding: '8px 16px',
                                     borderRadius: '20px',
                                     border: 'none',
-                                    backgroundColor: isSubscribed ? '#f2f2f2' : '#0f0f0f',
-                                    color: isSubscribed ? '#0f0f0f' : '#ffffff',
+                                    backgroundColor: subscribed ? '#f2f2f2' : '#0f0f0f',
+                                    color: subscribed ? '#0f0f0f' : '#ffffff',
                                     fontWeight: '500',
                                     cursor: 'pointer'
                                 }}
                             >
-                                {isSubscribed ? 'Subscribed' : 'Subscribe'}
+                                {subscribed ? 'Subscribed' : 'Subscribe'}
                             </button>
                         </div>
 
                         <div className="video-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <div className="action-group" style={{ display: 'flex', backgroundColor: '#f2f2f2', borderRadius: '20px', overflow: 'hidden' }}>
-                                <button style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', borderRight: '1px solid #d9d9d9' }}>
-                                    <ThumbsUpIcon size={20} /> <span style={{ fontWeight: '500' }}>12K</span>
+                                <button 
+                                    onClick={() => toggleLike(video)}
+                                    style={{ 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        gap: '6px', 
+                                        padding: '8px 16px', 
+                                        border: 'none', 
+                                        background: 'none', 
+                                        cursor: 'pointer', 
+                                        borderRight: '1px solid #d9d9d9',
+                                        color: liked ? '#065fd4' : 'inherit'
+                                    }}
+                                >
+                                    <ThumbsUpIcon size={20} /> <span style={{ fontWeight: '500' }}>{liked ? 'Liked' : '12K'}</span>
                                 </button>
                                 <button style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer' }}>
                                     <ThumbsDownIcon size={20} />
