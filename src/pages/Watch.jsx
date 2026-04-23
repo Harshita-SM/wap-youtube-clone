@@ -5,7 +5,8 @@ import CommentSection from '../components/CommentSection';
 import VideoPlayer from '../components/VideoPlayer';
 import NotFound from '../components/NotFound';
 import { mockVideos } from '../data/videos';
-import { ThumbsUpIcon, ThumbsDownIcon, ShareIcon, MoreIcon } from '../components/YouTubeIcons';
+import { ThumbsUpIcon, ThumbsDownIcon, ShareIcon, MoreIcon, WatchLaterIcon } from '../components/YouTubeIcons';
+
 import { useApp } from '../AppContext';
 import { formatDuration } from '../utils/formatters';
 
@@ -19,7 +20,15 @@ function Watch() {
     const { id } = useParams();
     
     // 2. Access Global State from AppContext
-    const { addToHistory, toggleLike, isLiked, toggleSubscription, isSubscribed } = useApp();
+    const { 
+        addToHistory, 
+        toggleLike, 
+        isLiked, 
+        toggleSubscription, 
+        isSubscribed,
+        toggleWatchLater,
+        isWatchLater
+    } = useApp();
 
     // 3. Find the specific video data from our mock database using the ID
     const video = mockVideos.find(v => v.id === id);
@@ -44,6 +53,7 @@ function Watch() {
 
     const liked = isLiked(video.id);
     const subscribed = isSubscribed(video.channelName);
+    const savedLater = isWatchLater(video.id);
 
     return (
         <div className="watch-container">
@@ -121,6 +131,22 @@ function Watch() {
                             </div>
                             <button style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 16px', borderRadius: '20px', border: 'none', backgroundColor: '#f2f2f2', cursor: 'pointer' }}>
                                 <ShareIcon size={20} /> <span style={{ fontWeight: '500' }}>Share</span>
+                            </button>
+                            <button 
+                                onClick={() => toggleWatchLater(video)}
+                                style={{ 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    gap: '6px', 
+                                    padding: '8px 16px', 
+                                    borderRadius: '20px', 
+                                    border: 'none', 
+                                    backgroundColor: savedLater ? '#e8f0fe' : '#f2f2f2', 
+                                    color: savedLater ? '#065fd4' : 'inherit',
+                                    cursor: 'pointer' 
+                                }}
+                            >
+                                <WatchLaterIcon size={20} /> <span style={{ fontWeight: '500' }}>{savedLater ? 'Saved' : 'Save'}</span>
                             </button>
                             <button style={{ padding: '8px', borderRadius: '50%', border: 'none', backgroundColor: '#f2f2f2', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 <MoreIcon size={20} />
