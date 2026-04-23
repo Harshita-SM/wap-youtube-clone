@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // Some mock comments for display
-const mockComments = [
+const initialComments = [
     {
         id: 1,
         user: "Shubham Beta",
@@ -29,32 +29,61 @@ const mockComments = [
 ];
 
 function CommentSection() {
+    const [comments, setComments] = useState(initialComments);
+    const [inputText, setInputText] = useState('');
+
+    const handleAddComment = (e) => {
+        e.preventDefault();
+        if (!inputText.trim()) return;
+
+        const newComment = {
+            id: Date.now(),
+            user: "You",
+            avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=50&q=80",
+            text: inputText,
+            likes: 0,
+            date: "Just now"
+        };
+
+        // Add the new comment to the top of the feed
+        setComments([newComment, ...comments]);
+        setInputText(''); // Clear input box
+    };
+
     return (
         <div className="comment-section">
-            <h3 className="comment-count">{mockComments.length} Comments</h3>
+            <h3 className="comment-count">{comments.length} Comments</h3>
             
             {/* Input area to add a new comment */}
-            <div className="add-comment-container">
+            <form className="add-comment-container" onSubmit={handleAddComment} style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
                 <img 
                     src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=50&q=80" 
                     alt="User" 
                     className="user-avatar" 
+                    style={{ width: '40px', height: '40px', borderRadius: '50%' }}
                 />
-                <input type="text" placeholder="Add a comment..." className="comment-input" />
-            </div>
+                <input 
+                    type="text" 
+                    placeholder="Add a comment... (Press Enter to post)" 
+                    className="comment-input" 
+                    value={inputText}
+                    onChange={(e) => setInputText(e.target.value)}
+                    style={{ flex: 1, border: 'none', borderBottom: '1px solid var(--border)', background: 'transparent', color: 'var(--text)', outline: 'none' }}
+                />
+            </form>
 
             {/* List of comments */}
             <div className="comments-list">
-                {mockComments.map(comment => (
-                    <div key={comment.id} className="comment-item">
-                        <img src={comment.avatar} alt={comment.user} className="comment-avatar" />
+                {comments.map(comment => (
+                    <div key={comment.id} className="comment-item" style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
+                        <img src={comment.avatar} alt={comment.user} className="comment-avatar" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
                         <div className="comment-content">
-                            <div className="comment-header">
-                                <span className="comment-user">{comment.user}</span>
-                                <span className="comment-date">{comment.date}</span>
+                            <div className="comment-header" style={{ marginBottom: '4px' }}>
+                                <span className="comment-user" style={{ fontWeight: '500', marginRight: '8px', fontSize: '13px' }}>{comment.user}</span>
+                                <span className="comment-date" style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{comment.date}</span>
                             </div>
-                            <p className="comment-text">{comment.text}</p>
-                            <div className="comment-actions">
+                            <p className="comment-text" style={{ margin: 0, fontSize: '14px' }}>{comment.text}</p>
+                            <div className="comment-actions" style={{ display: 'flex', gap: '16px', marginTop: '8px', fontSize: '12px', color: 'var(--text-secondary)', cursor: 'pointer' }}>
                                 <span>👍 {comment.likes}</span>
                                 <span>👎</span>
                                 <span className="reply-btn">REPLY</span>
