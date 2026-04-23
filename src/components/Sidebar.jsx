@@ -6,6 +6,8 @@ import {
     TrendingIcon, MusicIcon, GamingIcon, NewsIcon, SportsIcon, SettingsIcon,
     FlagIcon, HelpIcon, FeedbackIcon, ChevronRightIcon
 } from './YouTubeIcons';
+import { useApp } from '../AppContext';
+import { mockChannels } from '../data/channels';
 
 const primaryItems = [
     { id: 'home', icon: HomeIcon, label: 'Home', path: '/' },
@@ -41,6 +43,7 @@ const settingItems = [
 function Sidebar({ isOpen }) {
     const navigate = useNavigate();
     const location = useLocation();
+    const { subscriptions } = useApp();
 
     if (!isOpen) return null;
 
@@ -50,6 +53,11 @@ function Sidebar({ isOpen }) {
         if (path !== '/' && location.pathname.startsWith(path)) return true;
         return false;
     };
+
+    // Filter channels that the user is subscribed to
+    const subscribedChannels = mockChannels.filter(channel => 
+        subscriptions.includes(channel.name)
+    );
 
     return (
         <aside className='sidebar'>
@@ -87,6 +95,33 @@ function Sidebar({ isOpen }) {
             </div>
 
             <hr className="sidebar-divider" style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '12px 0' }} />
+
+            {/* Subscriptions Section - New dynamic part! */}
+            {subscribedChannels.length > 0 && (
+                <>
+                    <div className="sidebar-section">
+                        <h3 style={{ padding: '8px 12px', margin: 0, fontSize: '16px', fontWeight: 'bold' }}>Subscriptions</h3>
+                        {subscribedChannels.map((channel) => (
+                            <div 
+                                key={channel.id} 
+                                className={`sidebar-item ${isActive(`/channel/${channel.id}`) ? 'active' : ''}`}
+                                onClick={() => navigate(`/channel/${channel.id}`)}
+                                style={{ gap: '16px' }}
+                            >
+                                <img 
+                                    src={channel.avatar} 
+                                    alt={channel.name} 
+                                    style={{ width: '24px', height: '24px', borderRadius: '50%' }} 
+                                />
+                                <span className='sidebar-text' style={{ fontSize: '14px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                    {channel.name}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                    <hr className="sidebar-divider" style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '12px 0' }} />
+                </>
+            )}
 
             <div className="sidebar-section">
                 <h3 style={{ padding: '8px 12px', margin: 0, fontSize: '16px', fontWeight: 'bold' }}>Explore</h3>

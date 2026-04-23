@@ -1,13 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MoreIcon, SearchIcon, FlagIcon } from './YouTubeIcons';
+import { MoreIcon, SearchIcon, FlagIcon, WatchLaterIcon, PlaylistsIcon } from './YouTubeIcons';
+import { useApp } from '../AppContext';
 
 /**
- * VideoCard Component - Now with a functional "More" menu!
+ * VideoCard Component - Now with hover actions!
  */
 function VideoCard({ video }) {
+    const { toggleWatchLater, isWatchLater } = useApp();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
     const menuRef = useRef(null);
+
+    const savedLater = isWatchLater(video.id);
 
     // Close menu when clicking outside
     useEffect(() => {
@@ -26,8 +31,19 @@ function VideoCard({ video }) {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    const handleWatchLater = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleWatchLater(video);
+    };
+
     return (
-        <div className="video-card-container" style={{ position: 'relative' }}>
+        <div 
+            className="video-card-container" 
+            style={{ position: 'relative' }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
             <div className="video-card">
                 {/* Video Thumbnail - Links to Watch Page */}
                 <Link to={`/watch/${video.id}`} className="video-card-link">
@@ -39,6 +55,52 @@ function VideoCard({ video }) {
                             loading="lazy"
                             style={{ width: '100%', aspectRatio: '16/9', borderRadius: '12px', objectFit: 'cover' }}
                         />
+                        
+                        {/* HOVER ACTIONS - Quick Save */}
+                        {isHovered && (
+                            <div style={{ 
+                                position: 'absolute', 
+                                top: '8px', 
+                                right: '8px', 
+                                display: 'flex', 
+                                flexDirection: 'column', 
+                                gap: '4px' 
+                            }}>
+                                <button 
+                                    onClick={handleWatchLater}
+                                    title={savedLater ? "Remove from Watch later" : "Watch later"}
+                                    style={{
+                                        backgroundColor: 'rgba(0,0,0,0.8)',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        padding: '4px',
+                                        color: savedLater ? '#3ea6ff' : 'white',
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                >
+                                    <WatchLaterIcon size={20} />
+                                </button>
+                                <button 
+                                    title="Add to queue"
+                                    style={{
+                                        backgroundColor: 'rgba(0,0,0,0.8)',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        padding: '4px',
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                >
+                                    <PlaylistsIcon size={20} />
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </Link>
 
@@ -84,40 +146,43 @@ function VideoCard({ video }) {
             </div>
 
             {/* MORE BUTTON */}
-            <div 
-                className="video-card-more" 
-                ref={menuRef}
-                style={{ position: 'absolute', top: '200px', right: '0', cursor: 'pointer', padding: '4px' }}
-                onClick={handleMenuClick}
-            >
-                <MoreIcon size={20} />
-                
-                {isMenuOpen && (
-                    <div className="dropdown-menu" style={{ 
-                        position: 'absolute',
-                        right: '0', 
-                        top: '24px', 
-                        width: '220px',
-                        backgroundColor: 'var(--bg)',
-                        border: '1px solid var(--border)',
-                        borderRadius: '12px',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                        zIndex: 10
-                    }}>
-                        <div className="dropdown-item" style={{ padding: '12px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <SearchIcon size={18} /> <span>Add to queue</span>
+            {isHovered && (
+                <div 
+                    className="video-card-more" 
+                    ref={menuRef}
+                    style={{ position: 'absolute', top: '200px', right: '0', cursor: 'pointer', padding: '4px' }}
+                    onClick={handleMenuClick}
+                >
+                    <MoreIcon size={20} />
+                    
+                    {isMenuOpen && (
+                        <div className="dropdown-menu" style={{ 
+                            position: 'absolute',
+                            right: '0', 
+                            top: '24px', 
+                            width: '220px',
+                            backgroundColor: 'var(--bg)',
+                            border: '1px solid var(--border)',
+                            borderRadius: '12px',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                            zIndex: 10
+                        }}>
+                            <div className="dropdown-item" style={{ padding: '12px', display: 'flex', alignItems: 'center', gap: '12px' }} onClick={handleWatchLater}>
+                                <WatchLaterIcon size={18} /> <span>{savedLater ? 'Remove from Watch later' : 'Save to Watch later'}</span>
+                            </div>
+                            <div className="dropdown-item" style={{ padding: '12px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <PlaylistsIcon size={18} /> <span>Save to playlist</span>
+                            </div>
+                            <div className="dropdown-item" style={{ padding: '12px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <FlagIcon size={18} /> <span>Report</span>
+                            </div>
                         </div>
-                        <div className="dropdown-item" style={{ padding: '12px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <MoreIcon size={18} style={{ transform: 'rotate(90deg)' }} /> <span>Save to playlist</span>
-                        </div>
-                        <div className="dropdown-item" style={{ padding: '12px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <FlagIcon size={18} /> <span>Report</span>
-                        </div>
-                    </div>
-                )}
-            </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 }
 
 export default VideoCard;
+
