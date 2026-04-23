@@ -8,7 +8,7 @@ import { useApp } from '../AppContext';
  * This page displays the user's actual interactions tracked by AppContext.
  */
 function Library() {
-    const { history, likedVideos } = useApp();
+    const { history, likedVideos, watchLater } = useApp();
 
     const renderSection = (title, icon, videos, emptyMessage) => (
         <div style={{ marginBottom: '32px' }}>
@@ -50,13 +50,12 @@ function Library() {
             
             <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '24px 0' }} />
             
-            <div style={{ opacity: 0.6 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-                    <WatchLaterIcon size={24} />
-                    <h2 style={{ margin: 0, fontSize: '18px' }}>Watch Later</h2>
-                </div>
-                <p>Features coming soon: Watch Later persistence.</p>
-            </div>
+            {renderSection(
+                "Watch Later", 
+                <WatchLaterIcon size={24} />, 
+                watchLater, 
+                "Save videos to watch later using the Save button on any video."
+            )}
         </div>
     );
 }
