@@ -1,8 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // VideoCard component takes a 'video' object as a prop
 function VideoCard({ video }) {
+    const navigate = useNavigate();
+
+    const handleChannelClick = (e) => {
+        e.preventDefault();
+        navigate(`/channel/${encodeURIComponent(video.channelName)}`);
+    };
+
     return (
         // Link wraps the entire card so clicking it takes you to the watch page
         <Link to={`/watch/${video.id}`} className="video-card-link">
@@ -25,10 +32,11 @@ function VideoCard({ video }) {
                         alt={`${video.channelName} avatar`} 
                         className="channel-avatar" 
                         loading="lazy"
+                        onClick={handleChannelClick}
                     />
                     <div className="video-text">
                         <h3 className="video-title">{video.title}</h3>
-                        <p className="channel-name">{video.channelName}</p>
+                        <p className="channel-name" onClick={handleChannelClick} style={{ cursor: 'pointer' }}>{video.channelName}</p>
                         <p className="video-metadata">
                             {video.views} • {video.uploadDate}
                         </p>
