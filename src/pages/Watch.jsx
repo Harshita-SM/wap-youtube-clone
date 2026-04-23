@@ -39,15 +39,15 @@ function Watch() {
             {/* LEFT SIDE: Main content (Video + Info + Comments) */}
             <main className="watch-main-content">
                 
-                {/* Video Player Placeholder */}
                 <div className="video-player-box">
-                    <img 
-                        src={video.thumbnail} 
-                        alt={video.title} 
-                        className="main-video-image"
-                        style={{ width: '100%', borderRadius: '12px', aspectRatio: '16/9', objectFit: 'cover' }}
-                    />
-                    {/* In a real app, an <iframe /> or <video /> tag would go here */}
+                    <iframe 
+                        width="100%" 
+                        style={{ aspectRatio: '16/9', borderRadius: '12px', border: 'none' }}
+                        src={`https://www.youtube.com/embed/${video.youtubeId || 'dQw4w9WgXcQ'}?autoplay=1`}
+                        title="YouTube video player" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowFullScreen
+                    ></iframe>
                 </div>
                 
                 {/* Video Details Section */}
