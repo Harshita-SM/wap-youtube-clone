@@ -11,6 +11,7 @@ import Channel from './pages/Channel';
 import Library from './pages/Library';
 import Shorts from './pages/Shorts';
 import Subscriptions from './pages/Subscriptions';
+import Activity from './pages/Activity';
 
 const appLayoutStyle = {
   display: 'flex',
@@ -44,6 +45,7 @@ function App() {
             <Route path="/search/:query" element={<SearchResults />} />
             <Route path="/channel/:id" element={<Channel />} />
             <Route path="/library" element={<Library />} />
+            <Route path="/activity" element={<Activity />} />
           </Routes>
         </div>
       </div>

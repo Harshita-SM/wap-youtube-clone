@@ -23,6 +23,7 @@ const secondaryItems = [
     { id: 'watch-later', icon: WatchLaterIcon, label: 'Watch Later' },
     { id: 'liked', icon: LikedVideosIcon, label: 'Liked videos', path: '/library' },
     { id: 'downloads', icon: DownloadsIcon, label: 'Downloads' },
+    { id: 'activity', icon: TrendingIcon, label: 'Your activity', path: '/activity' },
 ];
 
 const exploreItems = [
