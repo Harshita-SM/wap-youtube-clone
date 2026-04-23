@@ -1,164 +1,159 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import VideoCard from '../components/VideoCard';
 import { mockVideos } from '../data/videos';
-import { TrendingIcon, PlaylistsIcon } from '../components/YouTubeIcons';
+import { FilterIcon } from '../components/YouTubeIcons';
 
 /**
- * SearchResults Page Component
- * Enhanced with filtering, sorting, and better UX
+ * Search Results Page - Now with Advanced Filtering & Sorting!
  */
 function SearchResults() {
     const { query } = useParams();
     const decodedQuery = decodeURIComponent(query || '').toLowerCase();
-    
-    // State for sorting and filtering
-    const [sortBy, setSortBy] = useState('relevance');
-    const [selectedCategory, setSelectedCategory] = useState('All');
 
-    // Get unique categories from results
-    const availableCategories = useMemo(() => {
-        const categories = new Set(mockVideos.map(v => v.category || 'Other'));
-        return ['All', ...Array.from(categories)];
-    }, []);
+    // Filtering State
+    const [showFilters, setShowFilters] = useState(false);
+    const [sortBy, setSortBy] = useState('relevance'); // relevance, date, views
+    const [filterCategory, setFilterCategory] = useState('All');
 
-    // Enhanced search and filter logic
-    const searchResults = useMemo(() => {
-        let filtered = mockVideos.filter(video => 
+    // Get unique categories for the filter dropdown
+    const categories = ['All', ...new Set(mockVideos.map(v => v.category))];
+
+    // Helper to parse views for sorting (e.g., "1.2M views" -> 1200000)
+    const parseViews = (viewStr) => {
+        if (!viewStr) return 0;
+        const num = parseFloat(viewStr);
+        if (viewStr.includes('M')) return num * 1000000;
+        if (viewStr.includes('K')) return num * 1000;
+        return num;
+    };
+
+    // Helper to parse dates for sorting (simulated for mock strings)
+    const parseDate = (dateStr) => {
+        if (!dateStr || dateStr === 'Streaming Now') return Date.now();
+        const num = parseInt(dateStr);
+        if (dateStr.includes('hour')) return Date.now() - (num * 3600000);
+        if (dateStr.includes('day')) return Date.now() - (num * 86400000);
+        if (dateStr.includes('week')) return Date.now() - (num * 604800000);
+        if (dateStr.includes('month')) return Date.now() - (num * 2592000000);
+        if (dateStr.includes('year')) return Date.now() - (num * 31536000000);
+        return 0;
+    };
+
+    // Processed Results (Memoized for performance)
+    const processedResults = useMemo(() => {
+        let results = mockVideos.filter(video => 
             video.title.toLowerCase().includes(decodedQuery) || 
-            video.description?.toLowerCase().includes(decodedQuery) ||
-            video.channelName?.toLowerCase().includes(decodedQuery)
+            video.description.toLowerCase().includes(decodedQuery)
         );
 
-        // Apply category filter
-        if (selectedCategory !== 'All') {
-            filtered = filtered.filter(video => (video.category || 'Other') === selectedCategory);
+        // Apply Category Filter
+        if (filterCategory !== 'All') {
+            results = results.filter(v => v.category === filterCategory);
         }
 
-        // Apply sorting
-        filtered.sort((a, b) => {
-            switch (sortBy) {
-                case 'views':
-                    return parseInt(b.views || 0) - parseInt(a.views || 0);
-                case 'recent':
-                    return new Date(b.uploadedAt) - new Date(a.uploadedAt);
-                case 'title':
-                    return a.title.localeCompare(b.title);
-                case 'relevance':
-                default:
-                    // Simple relevance: prioritize title matches over description
-                    const aTitleMatch = a.title.toLowerCase().includes(decodedQuery) ? 1 : 0;
-                    const bTitleMatch = b.title.toLowerCase().includes(decodedQuery) ? 1 : 0;
-                    return bTitleMatch - aTitleMatch;
-            }
-        });
+        // Apply Sorting
+        if (sortBy === 'views') {
+            results.sort((a, b) => parseViews(b.views) - parseViews(a.views));
+        } else if (sortBy === 'date') {
+            results.sort((a, b) => parseDate(b.uploadDate) - parseDate(a.uploadDate));
+        }
 
-        return filtered;
-    }, [decodedQuery, sortBy, selectedCategory]);
-
-    const handleSortChange = useCallback((newSort) => {
-        setSortBy(newSort);
-    }, []);
-
-    const handleCategoryChange = useCallback((category) => {
-        setSelectedCategory(category);
-    }, []);
+        return results;
+    }, [decodedQuery, filterCategory, sortBy]);
 
     return (
         <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
-            {/* Header with search query */}
-            <div style={{ marginBottom: '32px' }}>
-                <h1 style={{ fontSize: '28px', marginBottom: '8px' }}>
-                    Search Results for: <span style={{ color: 'var(--accent)' }}>"{decodedQuery}"</span>
-                </h1>
-                <p style={{ color: 'var(--text)', fontSize: '14px' }}>
-                    Found {searchResults.length} {searchResults.length === 1 ? 'result' : 'results'}
-                </p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                <h2 style={{ fontSize: '20px', fontWeight: 'bold' }}>
+                    Results for: "{decodedQuery}"
+                </h2>
+                
+                <button 
+                    onClick={() => setShowFilters(!showFilters)}
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        padding: '8px 16px',
+                        borderRadius: '20px',
+                        border: 'none',
+                        backgroundColor: showFilters ? '#f2f2f2' : 'transparent',
+                        cursor: 'pointer',
+                        fontWeight: '500'
+                    }}
+                >
+                    <FilterIcon size={20} />
+                    <span>Filters</span>
+                </button>
             </div>
 
-            {/* Filter and Sort Controls */}
-            {searchResults.length > 0 && (
-                <div style={{ marginBottom: '24px' }}>
-                    {/* Sort Options */}
-                    <div style={{ marginBottom: '16px', display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <TrendingIcon size={18} />
-                            <span style={{ fontSize: '14px', fontWeight: '500' }}>Sort by:</span>
-                        </div>
-                        {['relevance', 'views', 'recent', 'title'].map(option => (
-                            <button
-                                key={option}
-                                onClick={() => handleSortChange(option)}
-                                style={{
-                                    padding: '6px 12px',
-                                    borderRadius: '20px',
-                                    border: sortBy === option ? '1px solid var(--accent)' : '1px solid var(--border)',
-                                    backgroundColor: sortBy === option ? 'var(--accent-bg)' : 'transparent',
-                                    color: sortBy === option ? 'var(--accent)' : 'var(--text)',
-                                    fontSize: '13px',
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s ease',
-                                    textTransform: 'capitalize'
-                                }}
-                            >
-                                {option}
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* Category Filter */}
-                    {availableCategories.length > 1 && (
-                        <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <PlaylistsIcon size={18} />
-                                <span style={{ fontSize: '14px', fontWeight: '500' }}>Category:</span>
-                            </div>
-                            {availableCategories.map(category => (
-                                <button
-                                    key={category}
-                                    onClick={() => handleCategoryChange(category)}
-                                    style={{
-                                        padding: '6px 12px',
-                                        borderRadius: '20px',
-                                        border: selectedCategory === category ? '1px solid var(--accent)' : '1px solid var(--border)',
-                                        backgroundColor: selectedCategory === category ? 'var(--accent-bg)' : 'transparent',
-                                        color: selectedCategory === category ? 'var(--accent)' : 'var(--text)',
-                                        fontSize: '13px',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.2s ease'
+            {/* Filter Panel */}
+            {showFilters && (
+                <div style={{ 
+                    display: 'flex', 
+                    gap: '48px', 
+                    padding: '24px 0', 
+                    borderBottom: '1px solid var(--border)',
+                    marginBottom: '24px'
+                }}>
+                    {/* Sort By Column */}
+                    <div>
+                        <h4 style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', color: '#606060', marginBottom: '16px' }}>
+                            Sort By
+                        </h4>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            {['relevance', 'date', 'views'].map(option => (
+                                <span 
+                                    key={option}
+                                    onClick={() => setSortBy(option)}
+                                    style={{ 
+                                        fontSize: '14px', 
+                                        color: sortBy === option ? 'var(--text)' : '#606060',
+                                        fontWeight: sortBy === option ? '600' : 'normal',
+                                        cursor: 'pointer'
                                     }}
                                 >
-                                    {category}
-                                </button>
+                                    {option.charAt(0).toUpperCase() + option.slice(1)}
+                                </span>
                             ))}
                         </div>
-                    )}
+                    </div>
+
+                    {/* Category Column */}
+                    <div>
+                        <h4 style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', color: '#606060', marginBottom: '16px' }}>
+                            Category
+                        </h4>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            {categories.map(cat => (
+                                <span 
+                                    key={cat}
+                                    onClick={() => setFilterCategory(cat)}
+                                    style={{ 
+                                        fontSize: '14px', 
+                                        color: filterCategory === cat ? 'var(--text)' : '#606060',
+                                        fontWeight: filterCategory === cat ? '600' : 'normal',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    {cat}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             )}
 
-            {/* Results Grid or Empty State */}
-            {searchResults.length > 0 ? (
-                <div className="video-grid">
-                    {searchResults.map(video => (
-                        <VideoCard 
-                            key={video.id} 
-                            video={video}
-                            onClick={(id) => window.location.href = `/watch/${id}`}
-                        />
+            {processedResults.length > 0 ? (
+                <div className="video-grid" style={{ marginTop: '24px' }}>
+                    {processedResults.map(video => (
+                        <VideoCard key={video.id} video={video} />
                     ))}
                 </div>
             ) : (
-                <div style={{ 
-                    textAlign: 'center', 
-                    padding: '60px 24px',
-                    borderRadius: '12px',
-                    backgroundColor: 'var(--code-bg)'
-                }}>
-                    <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔍</div>
-                    <h2 style={{ margin: '0 0 8px 0', fontSize: '20px' }}>No results found</h2>
-                    <p style={{ color: 'var(--text)', margin: 0 }}>
-                        Try searching with different keywords or filters
-                    </p>
+                <div style={{ textAlign: 'center', padding: '80px 0' }}>
+                    <p style={{ color: 'var(--text-secondary)' }}>No results found matching your criteria.</p>
                 </div>
             )}
         </div>

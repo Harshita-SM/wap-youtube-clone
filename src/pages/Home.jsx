@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CategoryBar from '../components/CategoryBar';
 import VideoCard from '../components/VideoCard';
+import SkeletonCard from '../components/SkeletonCard';
 import { mockVideos } from '../data/videos';
 
 function Home() {
     const [activeCategory, setActiveCategory] = useState("All");
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setLoading(false), 1000);
+        return () => clearTimeout(timer);
+    }, []);
 
     const filteredVideos = activeCategory === "All" 
         ? mockVideos 
@@ -14,9 +21,13 @@ function Home() {
         <div className="home-page">
             <CategoryBar activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
             <div className="video-grid">
-                {filteredVideos.map(video => (
-                    <VideoCard key={video.id} video={video} />
-                ))}
+                {loading ? (
+                    Array(12).fill(0).map((_, i) => <SkeletonCard key={i} />)
+                ) : (
+                    filteredVideos.map(video => (
+                        <VideoCard key={video.id} video={video} />
+                    ))
+                )}
             </div>
         </div>
     );

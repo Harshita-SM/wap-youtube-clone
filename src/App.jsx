@@ -3,12 +3,14 @@ import { Routes, Route } from 'react-router-dom'
 import './App.css'
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
+import Toast from './components/Toast';
 import Home from './pages/Home';
 import Watch from './pages/Watch';
 import SearchResults from './pages/SearchResults';
 import Channel from './pages/Channel';
 import Library from './pages/Library';
 import Shorts from './pages/Shorts';
+import Subscriptions from './pages/Subscriptions';
 
 const appLayoutStyle = {
   display: 'flex',
@@ -37,6 +39,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/shorts" element={<Shorts />} />
+            <Route path="/subscriptions" element={<Subscriptions />} />
             <Route path="/watch/:id" element={<Watch />} />
             <Route path="/search/:query" element={<SearchResults />} />
             <Route path="/channel/:id" element={<Channel />} />
@@ -44,6 +47,7 @@ function App() {
           </Routes>
         </div>
       </div>
+      <Toast />
     </>
   )
 }

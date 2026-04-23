@@ -198,3 +198,9 @@ export const ChevronRightIcon = ({ size = 24, className = "" }) => (
     <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
   </svg>
 );
+
+export const FilterIcon = ({ size = 24, className = "" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M15 17h6v1h-6v-1zm-2 1c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-1H3v1h6v-1zm6-7h6v1h-6v-1zm-2 1c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-1H3v1h6v-1zm6-7h6v1h-6v-1zm-2 1c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-1H3v1h6v-1z" />
+  </svg>
+);
