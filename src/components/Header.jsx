@@ -48,11 +48,15 @@ function Header({ toggleSidebar }) {
 
             {/* Right Section: Icons (Create, Notifications, User) */}
             <div className='header-right'>
-                <CreateIcon className='icon' />
-                <BellIcon className='icon' />
-                <div className='user-icon-container'>
+                <button className='icon-button' aria-label='Create'>
+                    <CreateIcon className='icon' />
+                </button>
+                <button className='icon-button' aria-label='Notifications'>
+                    <BellIcon className='icon' />
+                </button>
+                <button className='user-icon-container' aria-label='User Profile'>
                     <UserIcon className='icon' />
-                </div>
+                </button>
             </div>
         </header>
     );

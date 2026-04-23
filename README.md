@@ -37,5 +37,4 @@ This project was a collaborative effort by **Harshita**, **Manoj Ahire**, and **
 Feel free to explore the code, give it a star ⭐ if you like it, and stay tuned for more updates!
 
 ---
-
-Test commit Thu Apr 23 00:18:58 IST 2026
+Made with ❤️ by the Dream Team. Keep Coding! 🚀
