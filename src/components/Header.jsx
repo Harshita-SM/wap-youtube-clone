@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { Menu, Search, Video, Bell, User, Mic } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-function Header() {
+function Header({ toggleSidebar }) {
     // State to keep track of what the user is typing in the search bar
     const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
 
     // Function to handle the search action
     const handleSearch = (e) => {
         e.preventDefault(); // Prevents the page from refreshing on form submit
         if (searchQuery.trim()) {
-            alert(`Searching for: ${searchQuery}`);
-            // In a real app, you would navigate to a search results page here
+            navigate(`/search/${encodeURIComponent(searchQuery)}`);
         }
     };
 
@@ -18,7 +19,7 @@ function Header() {
         <header className='header'>
             {/* Left Section: Menu Icon and YouTube Logo */}
             <div className='header-left'>
-                <Menu className='icon' />
+                <Menu className='icon' onClick={toggleSidebar} />
                 <img 
                     src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" 
                     alt="YouTube Logo" 

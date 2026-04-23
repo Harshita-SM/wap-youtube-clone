@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CategoryBar from '../components/CategoryBar';
 import VideoCard from '../components/VideoCard';
 import { mockVideos } from '../data/mockData';
 
 function Home() {
+    const [activeCategory, setActiveCategory] = useState("All");
+
+    const filteredVideos = activeCategory === "All" 
+        ? mockVideos 
+        : mockVideos.filter(video => video.category === activeCategory);
+
     return (
         <div className="home-page">
-            <CategoryBar />
+            <CategoryBar activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
             <div className="video-grid">
-                {mockVideos.map(video => (
+                {filteredVideos.map(video => (
                     <VideoCard key={video.id} video={video} />
                 ))}
             </div>

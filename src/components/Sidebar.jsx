@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
     Home, Compass, PlaySquare, Clock, ThumbsUp, History, UserSquare, 
     Flame, Music, Gamepad2, Newspaper, Trophy, Settings, Flag, HelpCircle, MessageSquare, Video,
@@ -36,12 +37,22 @@ const settingItems = [
     { id: 'feedback', icon: MessageSquare, label: 'Send feedback' },
 ];
 
-function Sidebar() {
+function Sidebar({ isOpen }) {
+    const navigate = useNavigate();
+
+    if (!isOpen) return null;
+
     return (
         <aside className='sidebar'>
             <div className="sidebar-section">
                 {primaryItems.map((item) => (
-                    <div key={item.id} className={`sidebar-item ${item.id === 'home' ? 'active' : ''}`}>
+                    <div 
+                        key={item.id} 
+                        className={`sidebar-item ${item.id === 'home' ? 'active' : ''}`}
+                        onClick={() => {
+                            if (item.id === 'home') navigate('/');
+                        }}
+                    >
                         <item.icon className='sidebar-icon' size={20} />
                         <span className='sidebar-text' style={{ fontSize: '14px' }}>{item.label}</span>
                     </div>
@@ -55,7 +66,14 @@ function Sidebar() {
                     You <ChevronRight size={18} style={{ marginTop: '2px' }} />
                 </div>
                 {secondaryItems.map((item) => (
-                    <div key={item.id} className='sidebar-item'>
+                    <div 
+                        key={item.id} 
+                        className='sidebar-item'
+                        onClick={() => {
+                            if (item.id === 'your-channel') navigate('/channel/1');
+                            if (['history', 'playlists', 'liked'].includes(item.id)) navigate('/library');
+                        }}
+                    >
                         <item.icon className='sidebar-icon' size={20} />
                         <span className='sidebar-text' style={{ fontSize: '14px' }}>{item.label}</span>
                     </div>

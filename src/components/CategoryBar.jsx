@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // List of categories to display in the bar
 const categories = [
@@ -15,9 +15,7 @@ const categories = [
   "Technology"
 ];
 
-function CategoryBar() {
-    // State to track which category is currently selected
-    const [activeCategory, setActiveCategory] = useState("All");
+function CategoryBar({ activeCategory, setActiveCategory }) {
 
     return (
         <nav className='category-bar'>
