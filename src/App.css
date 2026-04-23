@@ -130,6 +130,7 @@ body {
   padding: 10px 12px;
   border-radius: 10px;
   cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .sidebar-item:hover {
@@ -164,6 +165,7 @@ body {
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
+  transition: all 0.2s ease-in-out;
 }
 
 .category-button.active {
