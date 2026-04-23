@@ -1,7 +1,7 @@
-// We are exporting this data so other components can import it
 export const mockVideos = [
     {
         id: "1",
+        channelId: "1",
         youtubeId: "bMknfKXIFA8",
         title: "React JS Full Course for Beginners | 2026",
         thumbnail: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2670&auto=format&fit=crop",
@@ -14,6 +14,7 @@ export const mockVideos = [
     },
     {
         id: "2",
+        channelId: "2",
         youtubeId: "vBngA-y_qG0",
         title: "Top 10 PC Builds for Gaming",
         thumbnail: "https://images.unsplash.com/photo-1587202372634-32705e3bf49c?q=80&w=2670&auto=format&fit=crop",
@@ -26,6 +27,7 @@ export const mockVideos = [
     },
     {
         id: "3",
+        channelId: "1",
         youtubeId: "5qap5aO4i9A",
         title: "Lofi Hip Hop Radio - Beats to Relax/Study to",
         thumbnail: "https://images.unsplash.com/photo-1516280440502-d2f623631bb5?q=80&w=2670&auto=format&fit=crop",
@@ -38,6 +40,7 @@ export const mockVideos = [
     },
     {
         id: "4",
+        channelId: "2",
         youtubeId: "1-18F_J_tQQ",
         title: "Breaking News: Major Tech Announcements",
         thumbnail: "https://images.unsplash.com/photo-1495020689067-958852a7765e?q=80&w=2669&auto=format&fit=crop",
@@ -50,6 +53,7 @@ export const mockVideos = [
     },
     {
         id: "5",
+        channelId: "1",
         youtubeId: "SMOhl9rk0Vc",
         title: "React Router v7 Tutorial - Navigation Explained",
         thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2670&auto=format&fit=crop",
@@ -62,6 +66,7 @@ export const mockVideos = [
     },
     {
         id: "6",
+        channelId: "2",
         youtubeId: "vBngA-y_qG0",
         title: "10 Minute Daily Workout at Home (No Equipment)",
         thumbnail: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2670&auto=format&fit=crop",

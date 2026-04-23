@@ -1,77 +1,105 @@
 import React, { useState } from 'react';
 import { ThumbsUpIcon, ThumbsDownIcon } from './YouTubeIcons';
+import { mockComments as initialComments } from '../data/comments';
 
-// Some mock comments for display
-const initialComments = [
-    {
-        id: 1,
-        user: "Shubham Beta",
-        avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=50&q=80",
-        text: "Great tutorial! This helped me understand React much better.",
-        likes: 124,
-        date: "2 days ago"
-    },
-    {
-        id: 2,
-        user: "Manoj Ahire",
-        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=50&q=80",
-        text: "Could you please make a video on Redux Toolkit?",
-        likes: 45,
-        date: "1 day ago"
-    },
-    {
-        id: 3,
-        user: "Harshita",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=50&q=80",
-        text: "The quality of these videos is amazing. Subscribed!",
-        likes: 89,
-        date: "5 hours ago"
-    }
-];
-
+/**
+ * Comment Section Component
+ * Manages display of comments and allows users to add new ones.
+ */
 function CommentSection() {
     const [comments, setComments] = useState(initialComments);
-    const [inputText, setInputText] = useState('');
+    const [newComment, setNewComment] = useState('');
+    const [isInputFocused, setIsInputFocused] = useState(false);
 
-    const handleAddComment = (e) => {
+    // 1. Handle adding a new comment
+    const handleSubmit = (e) => {
         e.preventDefault();
-        if (!inputText.trim()) return;
+        if (!newComment.trim()) return;
 
-        const newComment = {
+        const commentObj = {
             id: Date.now(),
-            user: "You",
+            user: "Guest User", // In a real app, this would be the logged-in user
             avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=50&q=80",
-            text: inputText,
+            text: newComment,
             likes: 0,
             date: "Just now"
         };
 
-        // Add the new comment to the top of the feed
-        setComments([newComment, ...comments]);
-        setInputText(''); // Clear input box
+        setComments([commentObj, ...comments]);
+        setNewComment('');
+        setIsInputFocused(false);
+    };
+
+    // 2. Handle cancelling
+    const handleCancel = () => {
+        setNewComment('');
+        setIsInputFocused(false);
     };
 
     return (
         <div className="comment-section">
-            <h3 className="comment-count">{comments.length} Comments</h3>
+            <h3 className="comment-count" style={{ fontSize: '20px', margin: '24px 0' }}>
+                {comments.length} Comments
+            </h3>
             
-            {/* Input area to add a new comment */}
-            <form className="add-comment-container" onSubmit={handleAddComment} style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
+            {/* Interactive Comment Input */}
+            <div className="add-comment-container" style={{ display: 'flex', gap: '16px', marginBottom: '32px' }}>
                 <img 
                     src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=50&q=80" 
                     alt="User" 
                     className="user-avatar" 
                     style={{ width: '40px', height: '40px', borderRadius: '50%' }}
                 />
-                <input 
-                    type="text" 
-                    placeholder="Add a comment... (Press Enter to post)" 
-                    className="comment-input" 
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    style={{ flex: 1, border: 'none', borderBottom: '1px solid var(--border)', background: 'transparent', color: 'var(--text)', outline: 'none' }}
-                />
-            </form>
+                <div style={{ flex: 1 }}>
+                    <form onSubmit={handleSubmit}>
+                        <input 
+                            type="text" 
+                            placeholder="Add a comment..." 
+                            className="comment-input" 
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                            onFocus={() => setIsInputFocused(true)}
+                            style={{
+                                width: '100%',
+                                border: 'none',
+                                borderBottom: '1px solid #e5e5e5',
+                                padding: '8px 0',
+                                outline: 'none',
+                                fontSize: '14px',
+                                backgroundColor: 'transparent',
+                                color: 'inherit'
+                            }}
+                        />
+                        {isInputFocused && (
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '12px' }}>
+                                <button 
+                                    type="button" 
+                                    onClick={handleCancel}
+                                    style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', fontWeight: '500' }}
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                    type="submit" 
+                                    disabled={!newComment.trim()}
+                                    style={{ 
+                                        backgroundColor: newComment.trim() ? '#065fd4' : '#cccccc', 
+                                        color: 'white', 
+                                        border: 'none', 
+                                        padding: '8px 16px', 
+                                        borderRadius: '18px', 
+                                        cursor: newComment.trim() ? 'pointer' : 'default',
+                                        fontSize: '14px',
+                                        fontWeight: '500'
+                                    }}
+                                >
+                                    Comment
+                                </button>
+                            </div>
+                        )}
+                    </form>
+                </div>
+            </div>
 
             {/* List of comments */}
             <div className="comments-list">
@@ -80,10 +108,10 @@ function CommentSection() {
                         <img src={comment.avatar} alt={comment.user} className="comment-avatar" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
                         <div className="comment-content">
                             <div className="comment-header" style={{ marginBottom: '4px' }}>
-                                <span className="comment-user" style={{ fontWeight: '500', marginRight: '8px', fontSize: '13px' }}>{comment.user}</span>
-                                <span className="comment-date" style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{comment.date}</span>
+                                <span className="comment-user" style={{ fontSize: '13px', fontWeight: '500', marginRight: '8px' }}>{comment.user}</span>
+                                <span className="comment-date" style={{ fontSize: '12px', color: '#606060' }}>{comment.date}</span>
                             </div>
-                            <p className="comment-text" style={{ margin: 0, fontSize: '14px' }}>{comment.text}</p>
+                            <p className="comment-text" style={{ margin: 0, fontSize: '14px', lineHeight: '1.4' }}>{comment.text}</p>
                             <div className="comment-actions" style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '8px' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                     <ThumbsUpIcon size={16} />

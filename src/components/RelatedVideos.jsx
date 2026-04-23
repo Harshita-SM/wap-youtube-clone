@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { mockVideos } from '../data/mockData';
+import { mockVideos } from '../data/videos';
 
 function RelatedVideos() {
     // Get the current video ID from the URL using useParams

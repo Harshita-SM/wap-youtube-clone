@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import VideoCard from '../components/VideoCard';
-import { mockVideos } from '../data/mockData';
+import { mockVideos } from '../data/videos';
 
 function SearchResults() {
     const { query } = useParams();

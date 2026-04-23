@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CategoryBar from '../components/CategoryBar';
 import VideoCard from '../components/VideoCard';
-import { mockVideos } from '../data/mockData';
+import { mockVideos } from '../data/videos';
 
 function Home() {
     const [activeCategory, setActiveCategory] = useState("All");

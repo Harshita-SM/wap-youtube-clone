@@ -4,7 +4,7 @@ import RelatedVideos from '../components/RelatedVideos';
 import CommentSection from '../components/CommentSection';
 import VideoPlayer from '../components/VideoPlayer';
 import NotFound from '../components/NotFound';
-import { mockVideos } from '../data/mockData';
+import { mockVideos } from '../data/videos';
 import { ThumbsUpIcon, ThumbsDownIcon, ShareIcon, MoreIcon } from '../components/YouTubeIcons';
 import { useApp } from '../AppContext';
 import { formatDuration } from '../utils/formatters';
