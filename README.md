@@ -26,7 +26,7 @@ We wanted to challenge ourselves with more than just a "Todo List." Building a v
 ## 🛠️ Built with hardwork &...
 - **React**: Our favorite UI library.
 - **Vite**: For that lightning-fast development experience.
-- **Lucide-React**: To keep our icons looking crisp and professional.
+- **Custom SVG Icons**: Authentic YouTube-style icons for a realistic user experience.
 - **Vanilla CSS**: Hand-crafted styles to get that perfect YouTube feel.
 
 ---

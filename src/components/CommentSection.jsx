@@ -1,4 +1,5 @@
 import React from 'react';
+import { ThumbsUpIcon, ThumbsDownIcon } from './YouTubeIcons';
 
 // Some mock comments for display
 const mockComments = [
@@ -54,10 +55,13 @@ function CommentSection() {
                                 <span className="comment-date">{comment.date}</span>
                             </div>
                             <p className="comment-text">{comment.text}</p>
-                            <div className="comment-actions">
-                                <span>👍 {comment.likes}</span>
-                                <span>👎</span>
-                                <span className="reply-btn">REPLY</span>
+                            <div className="comment-actions" style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '8px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <ThumbsUpIcon size={16} />
+                                    <span style={{ fontSize: '12px', color: '#606060' }}>{comment.likes}</span>
+                                </div>
+                                <ThumbsDownIcon size={16} />
+                                <span className="reply-btn" style={{ fontSize: '12px', fontWeight: '500', cursor: 'pointer', marginLeft: '8px' }}>REPLY</span>
                             </div>
                         </div>
                     </div>

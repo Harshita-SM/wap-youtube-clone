@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import RelatedVideos from '../components/RelatedVideos';
 import CommentSection from '../components/CommentSection';
 import { mockVideos } from '../data/mockData';
+import { ThumbsUpIcon, ThumbsDownIcon, ShareIcon, MoreIcon } from '../components/YouTubeIcons';
 
 /**
  * Watch Page Component
@@ -54,15 +55,15 @@ function Watch() {
                 <section className="video-info-section">
                     <h1 className="video-page-title">{video.title}</h1>
                     
-                    <div className="video-page-stats">
-                        <div className="channel-info">
+                    <div className="video-page-stats" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px' }}>
+                        <div className="channel-info" style={{ display: 'flex', alignItems: 'center' }}>
                             <img 
                                 src={video.channelAvatar} 
                                 alt={video.channelName} 
                                 className="channel-avatar-large" 
                                 style={{ width: '40px', height: '40px', borderRadius: '50%' }}
                             />
-                            <div className="channel-text">
+                            <div className="channel-text" style={{ marginLeft: '12px' }}>
                                 <h4 style={{ margin: 0 }}>{video.channelName}</h4>
                                 <span style={{ fontSize: '12px', color: '#606060' }}>1.2M subscribers</span>
                             </div>
@@ -83,6 +84,23 @@ function Watch() {
                                 }}
                             >
                                 {isSubscribed ? 'Subscribed' : 'Subscribe'}
+                            </button>
+                        </div>
+
+                        <div className="video-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div className="action-group" style={{ display: 'flex', backgroundColor: '#f2f2f2', borderRadius: '20px', overflow: 'hidden' }}>
+                                <button style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', borderRight: '1px solid #d9d9d9' }}>
+                                    <ThumbsUpIcon size={20} /> <span style={{ fontWeight: '500' }}>12K</span>
+                                </button>
+                                <button style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer' }}>
+                                    <ThumbsDownIcon size={20} />
+                                </button>
+                            </div>
+                            <button style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 16px', borderRadius: '20px', border: 'none', backgroundColor: '#f2f2f2', cursor: 'pointer' }}>
+                                <ShareIcon size={20} /> <span style={{ fontWeight: '500' }}>Share</span>
+                            </button>
+                            <button style={{ padding: '8px', borderRadius: '50%', border: 'none', backgroundColor: '#f2f2f2', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <MoreIcon size={20} />
                             </button>
                         </div>
                     </div>
