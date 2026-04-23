@@ -109,7 +109,7 @@ function Header({ toggleSidebar }) {
             {/* Center Section */}
             <div className='header-search-container' ref={dropdownRef}>
                 <form className='header-center' onSubmit={handleSearch}>
-                    <div style={{ position: 'relative', flex: 1 }}>
+                    <div style={{ position: 'relative', flex: 1, display: 'flex', width: '100%' }}>
                         <input 
                             type="text" 
                             placeholder='Search' 
@@ -144,7 +144,7 @@ function Header({ toggleSidebar }) {
                                         }}
                                         onMouseEnter={() => setActiveIndex(index)}
                                         style={{
-                                            padding: '8px 16px',
+                                            padding: '8px 16px 8px 20px',
                                             cursor: 'pointer',
                                             display: 'flex',
                                             alignItems: 'center',

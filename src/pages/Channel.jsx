@@ -26,7 +26,7 @@ function Channel() {
     const subscribed = isSubscribed(channel.name);
 
     return (
-        <div className="channel-page">
+        <div className="channel-page" style={{ padding: 0 }}>
             {/* Channel Banner */}
             <div 
                 className="channel-banner"
@@ -41,7 +41,7 @@ function Channel() {
             ></div>
             
             {/* Channel Header Info */}
-            <div style={{ padding: '24px 72px', display: 'flex', gap: '24px', alignItems: 'flex-start', borderBottom: '1px solid var(--border)' }}>
+            <div style={{ padding: '24px 56px', display: 'flex', gap: '24px', alignItems: 'flex-start', borderBottom: '1px solid var(--border)' }}>
                 <img 
                     src={channel.avatar} 
                     alt={channel.name} 
@@ -88,7 +88,7 @@ function Channel() {
             </div>
 
             {/* Video Grid */}
-            <div style={{ padding: '24px 72px' }}>
+            <div style={{ padding: '24px 56px' }}>
                 <div className="video-grid">
                     {channelVideos.length > 0 ? (
                         channelVideos.map(video => (

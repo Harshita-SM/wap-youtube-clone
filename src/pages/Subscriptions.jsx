@@ -17,8 +17,8 @@ function Subscriptions() {
     );
 
     return (
-        <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
+        <div className="subscriptions-page">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '24px 0 32px' }}>
                 <SubscriptionsIcon size={28} />
                 <h1 style={{ margin: 0, fontSize: '24px' }}>Subscriptions</h1>
             </div>

@@ -106,12 +106,12 @@ function Sidebar({ isOpen }) {
                                 key={channel.id} 
                                 className={`sidebar-item ${isActive(`/channel/${channel.id}`) ? 'active' : ''}`}
                                 onClick={() => navigate(`/channel/${channel.id}`)}
-                                style={{ gap: '16px' }}
+                                style={{ gap: '24px' }}
                             >
                                 <img 
                                     src={channel.avatar} 
                                     alt={channel.name} 
-                                    style={{ width: '24px', height: '24px', borderRadius: '50%' }} 
+                                    style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }} 
                                 />
                                 <span className='sidebar-text' style={{ fontSize: '14px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                     {channel.name}
