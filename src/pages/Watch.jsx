@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import RelatedVideos from '../components/RelatedVideos';
 import CommentSection from '../components/CommentSection';
+import VideoPlayer from '../components/VideoPlayer';
+import NotFound from '../components/NotFound';
 import { mockVideos } from '../data/mockData';
 import { ThumbsUpIcon, ThumbsDownIcon, ShareIcon, MoreIcon } from '../components/YouTubeIcons';
 import { useApp } from '../AppContext';
+import { formatDuration } from '../utils/formatters';
 
 /**
  * Watch Page Component
@@ -29,12 +32,13 @@ function Watch() {
         }
     }, [id, video]);
 
-    // 5. If the video doesn't exist (wrong ID), show a simple error message
+    // 5. If the video doesn't exist (wrong ID), show the proper 404 component
     if (!video) {
         return (
-            <div className="error-page" style={{ padding: '20px', textAlign: 'center' }}>
-                <h2>Oops! Video not found.</h2>
-            </div>
+            <NotFound
+                heading="Video not found"
+                message="This video may have been removed or the link might be broken."
+            />
         );
     }
 
@@ -46,16 +50,12 @@ function Watch() {
             {/* LEFT SIDE: Main content (Video + Info + Comments) */}
             <main className="watch-main-content">
                 
-                {/* Video Player Placeholder */}
-                <div className="video-player-box">
-                    <img 
-                        src={video.thumbnail} 
-                        alt={video.title} 
-                        className="main-video-image"
-                        style={{ width: '100%', borderRadius: '12px', aspectRatio: '16/9', objectFit: 'cover' }}
-                    />
-                    {/* In a real app, an <iframe /> or <video /> tag would go here */}
-                </div>
+                {/* Real Video Player — shows poster thumbnail, plays via HTML5 <video> */}
+                <VideoPlayer
+                    poster={video.thumbnail}
+                    title={video.title}
+                    duration={video.duration ? formatDuration(video.duration) : null}
+                />
                 
                 {/* Video Details Section */}
                 <section className="video-info-section">
