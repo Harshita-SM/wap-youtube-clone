@@ -1,11 +1,32 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MoreIcon } from './YouTubeIcons';
+import { MoreIcon, SearchIcon, Clock, FlagIcon } from './YouTubeIcons';
 
-// VideoCard component takes a 'video' object as a prop
+/**
+ * VideoCard Component - Now with a functional "More" menu!
+ */
 function VideoCard({ video }) {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const menuRef = useRef(null);
+
+    // Close menu when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setIsMenuOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const handleMenuClick = (e) => {
+        e.preventDefault(); // Prevent navigating to watch page
+        e.stopPropagation(); // Prevent event bubbling
+        setIsMenuOpen(!isMenuOpen);
+    };
+
     return (
-        // Link wraps the entire card so clicking it takes you to the watch page
         <div className="video-card-container" style={{ position: 'relative' }}>
             <Link to={`/watch/${video.id}`} className="video-card-link">
                 <div className="video-card">
@@ -20,7 +41,7 @@ function VideoCard({ video }) {
                         />
                     </div>
 
-                    {/* Video Information (Channel Avatar and Text) */}
+                    {/* Video Information */}
                     <div className="video-details">
                         <img 
                             src={video.channelAvatar} 
@@ -38,8 +59,29 @@ function VideoCard({ video }) {
                     </div>
                 </div>
             </Link>
-            <div className="video-card-more" style={{ position: 'absolute', bottom: '55px', right: '0', cursor: 'pointer', padding: '4px' }}>
+
+            {/* MORE BUTTON - Now ALIVE! */}
+            <div 
+                className="video-card-more" 
+                ref={menuRef}
+                style={{ position: 'absolute', bottom: '55px', right: '0', cursor: 'pointer', padding: '4px' }}
+                onClick={handleMenuClick}
+            >
                 <MoreIcon size={20} />
+                
+                {isMenuOpen && (
+                    <div className="dropdown-menu" style={{ right: '0', bottom: '30px', top: 'auto', width: '220px' }}>
+                        <div className="dropdown-item">
+                            <SearchIcon size={18} /> <span>Add to queue</span>
+                        </div>
+                        <div className="dropdown-item">
+                            <MoreIcon size={18} style={{ transform: 'rotate(90deg)' }} /> <span>Save to playlist</span>
+                        </div>
+                        <div className="dropdown-item">
+                            <FlagIcon size={18} /> <span>Report</span>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
