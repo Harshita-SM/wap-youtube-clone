@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import './App.css'
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
+import Toast from './components/Toast';
 import Home from './pages/Home';
 import Watch from './pages/Watch';
 import SearchResults from './pages/SearchResults';
@@ -46,6 +47,7 @@ function App() {
           </Routes>
         </div>
       </div>
+      <Toast />
     </>
   )
 }

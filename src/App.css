@@ -8,14 +8,12 @@
   --sidebar-width: 240px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
+.dark-theme {
     --text: #f1f1f1;
     --text-secondary: #aaaaaa;
     --bg: #0f0f0f;
     --border: #3f3f3f;
     --hover-bg: #272727;
-  }
 }
 
 body {

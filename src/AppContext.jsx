@@ -35,6 +35,12 @@ export const AppProvider = ({ children }) => {
         return saved ? JSON.parse(saved) : [];
     });
 
+    const [theme, setTheme] = useState(() => {
+        return localStorage.getItem('yt_theme') || 'light';
+    });
+
+    const [toast, setToast] = useState(null);
+
     // Persistence logic: Save to localStorage whenever state changes
     useEffect(() => {
         localStorage.setItem('yt_liked_videos', JSON.stringify(likedVideos));
@@ -52,6 +58,19 @@ export const AppProvider = ({ children }) => {
         localStorage.setItem('yt_watch_later', JSON.stringify(watchLater));
     }, [watchLater]);
 
+    useEffect(() => {
+        localStorage.setItem('yt_theme', theme);
+        document.body.className = theme === 'dark' ? 'dark-theme' : '';
+    }, [theme]);
+
+    /**
+     * Logic for Toasts
+     */
+    const showToast = (message) => {
+        setToast(message);
+        setTimeout(() => setToast(null), 3000);
+    };
+
     /**
      * Logic for Liked Videos
      */
@@ -59,8 +78,10 @@ export const AppProvider = ({ children }) => {
         setLikedVideos(prev => {
             const isLiked = prev.find(v => v.id === video.id);
             if (isLiked) {
+                showToast("Removed from liked videos");
                 return prev.filter(v => v.id !== video.id);
             } else {
+                showToast("Added to liked videos");
                 return [video, ...prev];
             }
         });
@@ -83,8 +104,10 @@ export const AppProvider = ({ children }) => {
     const toggleSubscription = (channelName) => {
         setSubscriptions(prev => {
             if (prev.includes(channelName)) {
+                showToast(`Unsubscribed from ${channelName}`);
                 return prev.filter(name => name !== channelName);
             } else {
+                showToast(`Subscribed to ${channelName}`);
                 return [...prev, channelName];
             }
         });
@@ -97,11 +120,17 @@ export const AppProvider = ({ children }) => {
         setWatchLater(prev => {
             const exists = prev.find(v => v.id === video.id);
             if (exists) {
+                showToast("Removed from Watch later");
                 return prev.filter(v => v.id !== video.id);
             } else {
+                showToast("Added to Watch later");
                 return [video, ...prev];
             }
         });
+    };
+
+    const toggleTheme = () => {
+        setTheme(prev => prev === 'light' ? 'dark' : 'light');
     };
 
     const value = {
@@ -109,10 +138,13 @@ export const AppProvider = ({ children }) => {
         history,
         subscriptions,
         watchLater,
+        theme,
+        toast,
         toggleLike,
         addToHistory,
         toggleSubscription,
         toggleWatchLater,
+        toggleTheme,
         isLiked: (videoId) => likedVideos.some(v => v.id === videoId),
         isSubscribed: (channelName) => subscriptions.includes(channelName),
         isWatchLater: (videoId) => watchLater.some(v => v.id === videoId)
