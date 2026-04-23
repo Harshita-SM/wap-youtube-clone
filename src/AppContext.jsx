@@ -30,6 +30,11 @@ export const AppProvider = ({ children }) => {
         return saved ? JSON.parse(saved) : [];
     });
 
+    const [watchLater, setWatchLater] = useState(() => {
+        const saved = localStorage.getItem('yt_watch_later');
+        return saved ? JSON.parse(saved) : [];
+    });
+
     // Persistence logic: Save to localStorage whenever state changes
     useEffect(() => {
         localStorage.setItem('yt_liked_videos', JSON.stringify(likedVideos));
@@ -42,6 +47,10 @@ export const AppProvider = ({ children }) => {
     useEffect(() => {
         localStorage.setItem('yt_subscriptions', JSON.stringify(subscriptions));
     }, [subscriptions]);
+
+    useEffect(() => {
+        localStorage.setItem('yt_watch_later', JSON.stringify(watchLater));
+    }, [watchLater]);
 
     /**
      * Logic for Liked Videos
@@ -81,15 +90,32 @@ export const AppProvider = ({ children }) => {
         });
     };
 
+    /**
+     * Logic for Watch Later
+     */
+    const toggleWatchLater = (video) => {
+        setWatchLater(prev => {
+            const exists = prev.find(v => v.id === video.id);
+            if (exists) {
+                return prev.filter(v => v.id !== video.id);
+            } else {
+                return [video, ...prev];
+            }
+        });
+    };
+
     const value = {
         likedVideos,
         history,
         subscriptions,
+        watchLater,
         toggleLike,
         addToHistory,
         toggleSubscription,
+        toggleWatchLater,
         isLiked: (videoId) => likedVideos.some(v => v.id === videoId),
-        isSubscribed: (channelName) => subscriptions.includes(channelName)
+        isSubscribed: (channelName) => subscriptions.includes(channelName),
+        isWatchLater: (videoId) => watchLater.some(v => v.id === videoId)
     };
 
     return (
