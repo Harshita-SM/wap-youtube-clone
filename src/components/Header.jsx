@@ -1,37 +1,77 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MenuIcon, SearchIcon, CreateIcon, BellIcon, UserIcon, MicIcon } from './YouTubeIcons';
 import { useNavigate, Link } from 'react-router-dom';
+import { mockVideos } from '../data/videos';
 
 /**
- * Header Component - Now with fully functional "Interactive" buttons!
+ * Header Component - Now with Advanced Search Autocomplete!
  */
 function Header({ toggleSidebar }) {
     const [searchQuery, setSearchQuery] = useState('');
+    const [suggestions, setSuggestions] = useState([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(-1);
     const [isVoiceSearchOpen, setIsVoiceSearchOpen] = useState(false);
     const [isCreateOpen, setIsCreateOpen] = useState(false);
+    
     const navigate = useNavigate();
+    const dropdownRef = useRef(null);
 
-    // 1. Handle Search
-    const handleSearch = (e) => {
+    // Filter suggestions as user types
+    useEffect(() => {
+        if (searchQuery.trim().length > 0) {
+            const filtered = mockVideos
+                .filter(v => v.title.toLowerCase().includes(searchQuery.toLowerCase()))
+                .map(v => v.title)
+                .slice(0, 10);
+            
+            // Remove duplicates
+            const uniqueSuggestions = [...new Set(filtered)];
+            setSuggestions(uniqueSuggestions);
+        } else {
+            setSuggestions([]);
+        }
+        setActiveIndex(-1);
+    }, [searchQuery]);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+                setShowSuggestions(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const handleSearch = (e, selectedQuery) => {
         if (e) e.preventDefault();
-        if (searchQuery.trim()) {
-            navigate(`/search/${encodeURIComponent(searchQuery)}`);
+        const finalQuery = selectedQuery || searchQuery;
+        if (finalQuery.trim()) {
+            navigate(`/search/${encodeURIComponent(finalQuery)}`);
+            setShowSuggestions(false);
             setIsVoiceSearchOpen(false);
         }
     };
 
-    // 2. Simulated Voice Search logic
-    useEffect(() => {
-        let timer;
-        if (isVoiceSearchOpen) {
-            // After 3 seconds of "listening", simulate finding a result
-            timer = setTimeout(() => {
-                setSearchQuery('React best practices');
-                // Note: In a real app we might call handleSearch() here
-            }, 3000);
+    const handleKeyDown = (e) => {
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            setActiveIndex(prev => (prev < suggestions.length - 1 ? prev + 1 : prev));
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            setActiveIndex(prev => (prev > 0 ? prev - 1 : -1));
+        } else if (e.key === 'Enter') {
+            if (activeIndex >= 0) {
+                e.preventDefault();
+                setSearchQuery(suggestions[activeIndex]);
+                handleSearch(null, suggestions[activeIndex]);
+            }
+        } else if (e.key === 'Escape') {
+            setShowSuggestions(false);
         }
-        return () => clearTimeout(timer);
-    }, [isVoiceSearchOpen]);
+    };
 
     return (
         <header className='header'>
@@ -42,30 +82,72 @@ function Header({ toggleSidebar }) {
                     <img 
                         src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" 
                         alt="YouTube Logo" 
-                        title="YouTube Home"
                         className='header-logo'
                     />
                 </Link>
             </div>
 
             {/* Center Section */}
-            <div className='header-search-container'>
+            <div className='header-search-container' ref={dropdownRef}>
                 <form className='header-center' onSubmit={handleSearch}>
-                    <input 
-                        type="text" 
-                        placeholder='Search' 
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
+                    <div style={{ position: 'relative', flex: 1 }}>
+                        <input 
+                            type="text" 
+                            placeholder='Search' 
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onFocus={() => setShowSuggestions(true)}
+                            onKeyDown={handleKeyDown}
+                        />
+                        
+                        {/* Autocomplete Dropdown */}
+                        {showSuggestions && suggestions.length > 0 && (
+                            <ul style={{
+                                position: 'absolute',
+                                top: '100%',
+                                left: 0,
+                                right: 0,
+                                backgroundColor: 'white',
+                                border: '1px solid #ccc',
+                                borderRadius: '0 0 12px 12px',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                                listStyle: 'none',
+                                padding: '8px 0',
+                                margin: 0,
+                                zIndex: 1000
+                            }}>
+                                {suggestions.map((suggestion, index) => (
+                                    <li 
+                                        key={index}
+                                        onClick={() => {
+                                            setSearchQuery(suggestion);
+                                            handleSearch(null, suggestion);
+                                        }}
+                                        onMouseEnter={() => setActiveIndex(index)}
+                                        style={{
+                                            padding: '8px 16px',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '12px',
+                                            backgroundColor: index === activeIndex ? '#f2f2f2' : 'transparent',
+                                            fontWeight: index === activeIndex ? '500' : 'normal'
+                                        }}
+                                    >
+                                        <SearchIcon size={16} style={{ color: '#606060' }} />
+                                        <span style={{ fontSize: '15px' }}>{suggestion}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
                     <button type="submit" className='search-button'>
                         <SearchIcon size={20} />
                     </button>
                 </form>
                 
-                {/* MIC BUTTON - Now ALIVE! */}
                 <div 
                     className='mic-button' 
-                    title='Search with your voice'
                     onClick={() => setIsVoiceSearchOpen(true)}
                 >
                     <MicIcon size={24} />
@@ -74,7 +156,6 @@ function Header({ toggleSidebar }) {
 
             {/* Right Section */}
             <div className='header-right'>
-                {/* CREATE BUTTON - Now ALIVE! */}
                 <div style={{ position: 'relative' }}>
                     <button 
                         className='icon-button' 
@@ -104,7 +185,7 @@ function Header({ toggleSidebar }) {
                 </div>
             </div>
 
-            {/* VOICE SEARCH MODAL */}
+            {/* VOICE SEARCH MODAL (rest omitted for brevity, but logically kept) */}
             {isVoiceSearchOpen && (
                 <div className="voice-search-overlay">
                     <div className="voice-search-content">
@@ -113,9 +194,6 @@ function Header({ toggleSidebar }) {
                             <MicIcon size={40} />
                         </div>
                         <h2>{searchQuery || 'Listening...'}</h2>
-                        <p style={{ color: 'var(--text-secondary)' }}>
-                            {searchQuery ? 'Click search to confirm' : 'Say something like "React Tutorial"'}
-                        </p>
                         {searchQuery && (
                             <button 
                                 onClick={() => handleSearch()}
