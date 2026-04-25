@@ -12,6 +12,7 @@ import Library from './pages/Library';
 import Shorts from './pages/Shorts';
 import Subscriptions from './pages/Subscriptions';
 import Activity from './pages/Activity';
+import Trending from './pages/Trending';
 
 const appLayoutStyle = {
   display: 'flex',
@@ -46,6 +47,7 @@ function App() {
             <Route path="/channel/:id" element={<Channel />} />
             <Route path="/library" element={<Library />} />
             <Route path="/activity" element={<Activity />} />
+            <Route path="/trending" element={<Trending />} />
           </Routes>
         </div>
       </div>

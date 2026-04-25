@@ -27,7 +27,7 @@ const secondaryItems = [
 ];
 
 const exploreItems = [
-    { id: 'trending', icon: TrendingIcon, label: 'Trending' },
+    { id: 'trending', icon: TrendingIcon, label: 'Trending', path: '/trending' },
     { id: 'music', icon: MusicIcon, label: 'Music' },
     { id: 'gaming', icon: GamingIcon, label: 'Gaming' },
     { id: 'news', icon: NewsIcon, label: 'News' },
