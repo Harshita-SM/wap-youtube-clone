@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { 
+import {
     HomeIcon, ShortsIcon, SubscriptionsIcon, HistoryIcon, UserIcon, LibraryIcon,
     PlaylistsIcon, YourVideosIcon, WatchLaterIcon, LikedVideosIcon, DownloadsIcon,
     TrendingIcon, MusicIcon, GamingIcon, NewsIcon, SportsIcon, SettingsIcon,
@@ -57,7 +56,6 @@ function Sidebar({ isOpen }) {
     };
 
     const currentActive = getActivePath();
-    const location = useLocation();
     const { subscriptions } = useApp();
 
     if (!isOpen) return null;
@@ -70,7 +68,7 @@ function Sidebar({ isOpen }) {
     };
 
     // Filter channels that the user is subscribed to
-    const subscribedChannels = mockChannels.filter(channel => 
+    const subscribedChannels = mockChannels.filter(channel =>
         subscriptions.includes(channel.name)
     );
 
@@ -78,13 +76,9 @@ function Sidebar({ isOpen }) {
         <aside className='sidebar'>
             <div className="sidebar-section">
                 {primaryItems.map((item) => (
-                    <div 
-                        key={item.id} 
-                        className={`sidebar-item ${item.id === currentActive ? 'active' : ''}`}
-                        onClick={() => {
-                            if (item.id === 'home') navigate('/');
-                            if (item.id === 'shorts') navigate('/shorts');
-                        }}
+                    <div
+                        key={item.id}
+
                         className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
                         onClick={() => navigate(item.path)}
                     >
@@ -101,9 +95,8 @@ function Sidebar({ isOpen }) {
                     You <ChevronRightIcon size={18} style={{ marginTop: '2px' }} />
                 </div>
                 {secondaryItems.map((item) => (
-                    <div 
-                        key={item.id} 
-                        className={`sidebar-item ${item.id === currentActive ? 'active' : ''}`}
+                    <div
+                        key={item.id}
                         className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
                         onClick={() => {
                             if (item.path) navigate(item.path);
@@ -123,16 +116,16 @@ function Sidebar({ isOpen }) {
                     <div className="sidebar-section">
                         <h3 style={{ padding: '8px 12px', margin: 0, fontSize: '16px', fontWeight: 'bold' }}>Subscriptions</h3>
                         {subscribedChannels.map((channel) => (
-                            <div 
-                                key={channel.id} 
+                            <div
+                                key={channel.id}
                                 className={`sidebar-item ${isActive(`/channel/${channel.id}`) ? 'active' : ''}`}
                                 onClick={() => navigate(`/channel/${channel.id}`)}
                                 style={{ gap: '24px' }}
                             >
-                                <img 
-                                    src={channel.avatar} 
-                                    alt={channel.name} 
-                                    style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }} 
+                                <img
+                                    src={channel.avatar}
+                                    alt={channel.name}
+                                    style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }}
                                 />
                                 <span className='sidebar-text' style={{ fontSize: '14px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                     {channel.name}
