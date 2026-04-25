@@ -16,7 +16,7 @@ function ThumbnailVideo({ video }) {
     const savedLater = isWatchLater(video.id);
 
     // Fallback thumbnail if image fails to load
-    const fallbackThumbnail = `https://via.placeholder.com/320x180/1a1a1a/ffffff?text=${encodeURIComponent(video.title.substring(0, 15))}`;
+    const fallbackThumbnail = `https://via.placeholder.com/320x180/2a2a2a/ffffff?text=${encodeURIComponent((video.title || 'Video').substring(0, 15))}`;
     const thumbnailUrl = video.thumbnail || fallbackThumbnail;
 
     const handleWatchLater = (e) => {
@@ -54,7 +54,7 @@ function ThumbnailVideo({ video }) {
                     {/* Thumbnail Image */}
                     <img
                         src={imageError ? fallbackThumbnail : thumbnailUrl}
-                        alt={video.title}
+                        alt={video.title || 'Video'}
                         loading="lazy"
                         onError={handleImageError}
                         style={{
@@ -62,7 +62,8 @@ function ThumbnailVideo({ video }) {
                             height: '100%',
                             objectFit: 'cover',
                             transition: 'transform 0.2s ease',
-                            transform: isHovered ? 'scale(1.02)' : 'scale(1)'
+                            transform: isHovered ? 'scale(1.02)' : 'scale(1)',
+                            backgroundColor: '#2a2a2a'
                         }}
                     />
 

@@ -30,13 +30,15 @@ export const mockVideos = [
         channelId: "1",
         youtubeId: "5qap5aO4i9A",
         title: "Lofi Hip Hop Radio - Beats to Relax/Study to",
-        thumbnail: "https://images.unsplash.com/photo-1516280440502-d2f623631bb5?q=80&w=2670&auto=format&fit=crop",
+        thumbnail: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3",
         channelName: "Chill Beats",
-        channelAvatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80",
+        channelAvatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80&ixlib=rb-4.0.3",
         views: "10M views",
         uploadDate: "Streaming Now",
         category: "Music",
-        description: "24/7 lofi hip hop radio. Perfect for studying, working, or just relaxing."
+        description: "24/7 lofi hip hop radio. Perfect for studying, working, or just relaxing.",
+        isLive: true,
+        duration: "24:00:00"
     },
     {
         id: "4",
@@ -76,5 +78,57 @@ export const mockVideos = [
         uploadDate: "1 year ago",
         category: "Sports",
         description: "Stay in shape directly from your living room. No equipment needed!"
+    },
+    {
+        id: "7",
+        channelId: "3",
+        youtubeId: "kffacxfA7g4",
+        title: "JavaScript ES6+ Tips and Tricks",
+        thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2670&auto=format&fit=crop",
+        channelName: "Dev Tips",
+        channelAvatar: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=150&q=80",
+        views: "567K views",
+        uploadDate: "2 weeks ago",
+        category: "Learning",
+        description: "Master modern JavaScript with advanced ES6+ features and best practices."
+    },
+    {
+        id: "8",
+        channelId: "4",
+        youtubeId: "E4MZZVv_kds",
+        title: "Cinematic Cooking Channel - Pasta Recipe",
+        thumbnail: "https://images.unsplash.com/photo-1495540200933-11d035312303?q=80&w=2670&auto=format&fit=crop",
+        channelName: "Cooking with Style",
+        channelAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
+        views: "2.1M views",
+        uploadDate: "5 days ago",
+        category: "Learning",
+        description: "Learn to make authentic Italian pasta from scratch with professional techniques."
+    },
+    {
+        id: "9",
+        channelId: "5",
+        youtubeId: "V2kpW8tgLHk",
+        title: "Latest Gaming Hardware Review 2026",
+        thumbnail: "https://images.unsplash.com/photo-1587829191301-e8fb01c60e19?q=80&w=2670&auto=format&fit=crop",
+        channelName: "Tech Reviews",
+        channelAvatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
+        views: "890K views",
+        uploadDate: "3 days ago",
+        category: "Gaming",
+        description: "Comprehensive review of the newest gaming GPUs and processors for 2026."
+    },
+    {
+        id: "10",
+        channelId: "6",
+        youtubeId: "5ey6drCWeL4",
+        title: "Music Production Tutorial - Beats from Scratch",
+        thumbnail: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=2670&auto=format&fit=crop",
+        channelName: "Beat Makers",
+        channelAvatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80",
+        views: "1.3M views",
+        uploadDate: "1 month ago",
+        category: "Music",
+        description: "Learn how to create professional beats from scratch using DAW production."
     }
 ];
