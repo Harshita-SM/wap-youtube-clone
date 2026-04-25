@@ -17,7 +17,7 @@ function Header({ toggleSidebar }) {
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     
-    const { theme, toggleTheme } = useApp();
+    const { theme, toggleTheme, showToast } = useApp();
     const navigate = useNavigate();
     const dropdownRef = useRef(null);
     const userMenuRef = useRef(null);
@@ -95,7 +95,9 @@ function Header({ toggleSidebar }) {
         <header className='header'>
             {/* Left Section */}
             <div className='header-left'>
-                <MenuIcon className='icon' onClick={toggleSidebar} />
+                <button className='icon-button menu-toggle' onClick={toggleSidebar} aria-label="Toggle menu">
+                    <MenuIcon className='icon' />
+                </button>
                 <Link to="/">
                     <img 
                         src={theme === 'dark' ? "https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png" : "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg"}
@@ -167,7 +169,10 @@ function Header({ toggleSidebar }) {
                 
                 <div 
                     className='mic-button' 
-                    onClick={() => setIsVoiceSearchOpen(true)}
+                    onClick={() => {
+                        setIsVoiceSearchOpen(true);
+                        showToast("Listening for your voice...");
+                    }}
                 >
                     <MicIcon size={24} />
                 </div>
@@ -185,10 +190,10 @@ function Header({ toggleSidebar }) {
                     
                     {isCreateOpen && (
                         <div className="dropdown-menu">
-                            <div className="dropdown-item">
+                            <div className="dropdown-item" onClick={() => showToast("Upload feature coming soon!")}>
                                 <SearchIcon size={20} /> <span>Upload video</span>
                             </div>
-                            <div className="dropdown-item">
+                            <div className="dropdown-item" onClick={() => showToast("Go live feature coming soon!")}>
                                 <MicIcon size={20} /> <span>Go live</span>
                             </div>
                         </div>
@@ -204,7 +209,7 @@ function Header({ toggleSidebar }) {
                         <div className="dropdown-menu" style={{ width: '400px', maxHeight: '500px', overflowY: 'auto' }}>
                             <div style={{ padding: '16px', borderBottom: '1px solid var(--border)', fontWeight: '500' }}>Notifications</div>
                             {mockNotifications.map(n => (
-                                <div key={n.id} className="dropdown-item" style={{ alignItems: 'flex-start', padding: '16px' }}>
+                                <div key={n.id} className="dropdown-item" style={{ alignItems: 'flex-start', padding: '16px' }} onClick={() => showToast("Notification clicked!")}>
                                     <img src={n.avatar} style={{ width: '48px', height: '48px', borderRadius: '50%' }} />
                                     <div style={{ flex: 1 }}>
                                         <div style={{ fontSize: '14px', marginBottom: '4px' }}>{n.text}</div>
@@ -229,17 +234,17 @@ function Header({ toggleSidebar }) {
                                     <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>@guestuser123</div>
                                 </div>
                             </div>
-                            <div className="dropdown-item" onClick={toggleTheme}>
+                            <div className="dropdown-item" onClick={() => { toggleTheme(); showToast(`Switched to ${theme === 'light' ? 'dark' : 'light'} theme`); }}>
                                 <SettingsIcon size={20} /> <span>Appearance: {theme === 'light' ? 'Light' : 'Dark'}</span>
                             </div>
-                            <div className="dropdown-item">
+                            <div className="dropdown-item" onClick={() => showToast("Account switching coming soon!")}>
                                 <HistoryIcon size={20} /> <span>Switch account</span>
                             </div>
-                            <div className="dropdown-item">
+                            <div className="dropdown-item" onClick={() => showToast("Signed out successfully!")}>
                                 <HelpIcon size={20} /> <span>Sign out</span>
                             </div>
                             <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '4px 0' }} />
-                            <div className="dropdown-item">
+                            <div className="dropdown-item" onClick={() => showToast("Settings coming soon!")}>
                                 <SettingsIcon size={20} /> <span>Settings</span>
                             </div>
                         </div>
@@ -247,7 +252,7 @@ function Header({ toggleSidebar }) {
                 </div>
             </div>
 
-            {/* VOICE SEARCH MODAL (rest omitted for brevity, but logically kept) */}
+            {/* VOICE SEARCH MODAL */}
             {isVoiceSearchOpen && (
                 <div className="voice-search-overlay">
                     <div className="voice-search-content">

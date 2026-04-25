@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { ThumbsUpIcon, ThumbsDownIcon } from './YouTubeIcons';
 import { mockComments as initialComments } from '../data/comments';
+import { useApp } from '../AppContext';
 
 /**
  * Comment Section Component
  * Manages display of comments and allows users to add new ones.
  */
 function CommentSection() {
+    const { showToast } = useApp();
     const [comments, setComments] = useState(initialComments);
     const [newComment, setNewComment] = useState('');
     const [isInputFocused, setIsInputFocused] = useState(false);
@@ -28,6 +30,7 @@ function CommentSection() {
         setComments([commentObj, ...comments]);
         setNewComment('');
         setIsInputFocused(false);
+        showToast("Comment posted!");
     };
 
     // 2. Handle cancelling
@@ -62,7 +65,7 @@ function CommentSection() {
                             style={{
                                 width: '100%',
                                 border: 'none',
-                                borderBottom: '1px solid #e5e5e5',
+                                borderBottom: '1px solid var(--border)',
                                 padding: '8px 0',
                                 outline: 'none',
                                 fontSize: '14px',
@@ -75,7 +78,7 @@ function CommentSection() {
                                 <button 
                                     type="button" 
                                     onClick={handleCancel}
-                                    style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', fontWeight: '500' }}
+                                    style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', fontWeight: '500', color: 'inherit' }}
                                 >
                                     Cancel
                                 </button>
@@ -83,8 +86,8 @@ function CommentSection() {
                                     type="submit" 
                                     disabled={!newComment.trim()}
                                     style={{ 
-                                        backgroundColor: newComment.trim() ? '#065fd4' : '#cccccc', 
-                                        color: 'white', 
+                                        backgroundColor: newComment.trim() ? '#065fd4' : 'var(--border)', 
+                                        color: newComment.trim() ? 'white' : 'var(--text-secondary)', 
                                         border: 'none', 
                                         padding: '8px 16px', 
                                         borderRadius: '18px', 
@@ -109,16 +112,18 @@ function CommentSection() {
                         <div className="comment-content">
                             <div className="comment-header" style={{ marginBottom: '4px' }}>
                                 <span className="comment-user" style={{ fontSize: '13px', fontWeight: '500', marginRight: '8px' }}>{comment.user}</span>
-                                <span className="comment-date" style={{ fontSize: '12px', color: '#606060' }}>{comment.date}</span>
+                                <span className="comment-date" style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{comment.date}</span>
                             </div>
                             <p className="comment-text" style={{ margin: 0, fontSize: '14px', lineHeight: '1.4' }}>{comment.text}</p>
                             <div className="comment-actions" style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '8px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }} onClick={() => showToast("Liked comment")}>
                                     <ThumbsUpIcon size={16} />
-                                    <span style={{ fontSize: '12px', color: '#606060' }}>{comment.likes}</span>
+                                    <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{comment.likes}</span>
                                 </div>
-                                <ThumbsDownIcon size={16} />
-                                <span className="reply-btn" style={{ fontSize: '12px', fontWeight: '500', cursor: 'pointer', marginLeft: '8px' }}>REPLY</span>
+                                <div style={{ cursor: 'pointer' }} onClick={() => showToast("Disliked comment")}>
+                                    <ThumbsDownIcon size={16} />
+                                </div>
+                                <span className="reply-btn" style={{ fontSize: '12px', fontWeight: '500', cursor: 'pointer', marginLeft: '8px' }} onClick={() => showToast("Reply feature coming soon!")}>REPLY</span>
                             </div>
                         </div>
                     </div>

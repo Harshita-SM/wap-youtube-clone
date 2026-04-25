@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { 
     HomeIcon, ShortsIcon, SubscriptionsIcon, HistoryIcon, UserIcon, LibraryIcon,
     PlaylistsIcon, YourVideosIcon, WatchLaterIcon, LikedVideosIcon, DownloadsIcon,
@@ -45,22 +44,7 @@ const settingItems = [
 function Sidebar({ isOpen }) {
     const navigate = useNavigate();
     const location = useLocation();
-
-    // Helper to determine if an item is active based on the URL
-    const getActivePath = () => {
-        const path = location.pathname;
-        if (path === '/') return 'home';
-        if (path.startsWith('/shorts')) return 'shorts';
-        if (path.startsWith('/library')) return 'history'; // For Library view group
-        if (path.startsWith('/channel')) return 'your-channel';
-        return '';
-    };
-
-    const currentActive = getActivePath();
-    const location = useLocation();
-    const { subscriptions } = useApp();
-
-    if (!isOpen) return null;
+    const { subscriptions, showToast } = useApp();
 
     const isActive = (path) => {
         if (!path) return false;
@@ -74,19 +58,22 @@ function Sidebar({ isOpen }) {
         subscriptions.includes(channel.name)
     );
 
+    const handleItemClick = (item) => {
+        if (item.path) {
+            navigate(item.path);
+        } else {
+            showToast(`${item.label} coming soon!`);
+        }
+    };
+
     return (
-        <aside className='sidebar'>
+        <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
             <div className="sidebar-section">
                 {primaryItems.map((item) => (
                     <div 
                         key={item.id} 
-                        className={`sidebar-item ${item.id === currentActive ? 'active' : ''}`}
-                        onClick={() => {
-                            if (item.id === 'home') navigate('/');
-                            if (item.id === 'shorts') navigate('/shorts');
-                        }}
                         className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
-                        onClick={() => navigate(item.path)}
+                        onClick={() => handleItemClick(item)}
                     >
                         <item.icon className='sidebar-icon' size={20} />
                         <span className='sidebar-text' style={{ fontSize: '14px' }}>{item.label}</span>
@@ -103,7 +90,6 @@ function Sidebar({ isOpen }) {
                 {secondaryItems.map((item) => (
                     <div 
                         key={item.id} 
-                        className={`sidebar-item ${item.id === currentActive ? 'active' : ''}`}
                         className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
                         onClick={() => {
                             if (item.path) navigate(item.path);
