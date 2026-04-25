@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CategoryBar from '../components/CategoryBar';
-import VideoCard from '../components/VideoCard';
+import ThumbnailVideo from '../components/ThumbnailVideo';
 import SkeletonCard from '../components/SkeletonCard';
 import { mockVideos } from '../data/videos';
 
@@ -25,7 +25,7 @@ function Home() {
                     Array(12).fill(0).map((_, i) => <SkeletonCard key={i} />)
                 ) : (
                     filteredVideos.map(video => (
-                        <VideoCard key={video.id} video={video} />
+                        <ThumbnailVideo key={video.id} video={video} />
                     ))
                 )}
             </div>
