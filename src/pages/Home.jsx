@@ -9,9 +9,10 @@ function Home() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const timer = setTimeout(() => setLoading(false), 1000);
+        setLoading(true);
+        const timer = setTimeout(() => setLoading(false), 600);
         return () => clearTimeout(timer);
-    }, []);
+    }, [activeCategory]);
 
     const filteredVideos = activeCategory === "All" 
         ? mockVideos 

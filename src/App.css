@@ -2,6 +2,7 @@
   --text: #0f0f0f;
   --text-secondary: #606060;
   --bg: #ffffff;
+  --bg-rgb: 255, 255, 255;
   --border: #e5e5e5;
   --hover-bg: #f2f2f2;
   --accent: #cc0000;
@@ -12,6 +13,7 @@
     --text: #f1f1f1;
     --text-secondary: #aaaaaa;
     --bg: #0f0f0f;
+    --bg-rgb: 15, 15, 15;
     --border: #3f3f3f;
     --hover-bg: #272727;
 }
@@ -59,7 +61,9 @@ body {
   justify-content: space-between;
   position: sticky;
   top: 0;
-  background-color: var(--bg);
+  background-color: rgba(var(--bg-rgb), 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   z-index: 1000;
 }
 
@@ -354,6 +358,18 @@ button:active:not(:disabled), .icon:active, .mic-button:active, .search-button:a
   aspect-ratio: 16/9;
   border-radius: 12px;
   object-fit: cover;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
+}
+
+.thumbnail-container {
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.video-card-container:hover .video-thumbnail,
+.thumbnail-container:hover .video-thumbnail {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
 }
 
 .video-details {

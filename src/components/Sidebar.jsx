@@ -56,7 +56,6 @@ function Sidebar({ isOpen }) {
     };
 
     const currentActive = getActivePath();
-    const location = useLocation();
     const { subscriptions } = useApp();
 
     if (!isOpen) return null;
@@ -87,11 +86,6 @@ function Sidebar({ isOpen }) {
                 {primaryItems.map((item) => (
                     <div 
                         key={item.id} 
-                        className={`sidebar-item ${item.id === currentActive ? 'active' : ''}`}
-                        onClick={() => {
-                            if (item.id === 'home') navigate('/');
-                            if (item.id === 'shorts') navigate('/shorts');
-                        }}
                         className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
                         onClick={() => handleItemClick(item)}
                     >
@@ -110,7 +104,6 @@ function Sidebar({ isOpen }) {
                 {secondaryItems.map((item) => (
                     <div 
                         key={item.id} 
-                        className={`sidebar-item ${item.id === currentActive ? 'active' : ''}`}
                         className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
                         onClick={() => {
                             if (item.path) navigate(item.path);
