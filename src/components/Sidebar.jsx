@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { 
     HomeIcon, ShortsIcon, SubscriptionsIcon, HistoryIcon, UserIcon, LibraryIcon,
     PlaylistsIcon, YourVideosIcon, WatchLaterIcon, LikedVideosIcon, DownloadsIcon,
@@ -44,6 +45,19 @@ const settingItems = [
 function Sidebar({ isOpen }) {
     const navigate = useNavigate();
     const location = useLocation();
+
+    // Helper to determine if an item is active based on the URL
+    const getActivePath = () => {
+        const path = location.pathname;
+        if (path === '/') return 'home';
+        if (path.startsWith('/shorts')) return 'shorts';
+        if (path.startsWith('/library')) return 'history'; // For Library view group
+        if (path.startsWith('/channel')) return 'your-channel';
+        return '';
+    };
+
+    const currentActive = getActivePath();
+    const location = useLocation();
     const { subscriptions } = useApp();
 
     if (!isOpen) return null;
@@ -66,6 +80,11 @@ function Sidebar({ isOpen }) {
                 {primaryItems.map((item) => (
                     <div 
                         key={item.id} 
+                        className={`sidebar-item ${item.id === currentActive ? 'active' : ''}`}
+                        onClick={() => {
+                            if (item.id === 'home') navigate('/');
+                            if (item.id === 'shorts') navigate('/shorts');
+                        }}
                         className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
                         onClick={() => navigate(item.path)}
                     >
@@ -84,6 +103,7 @@ function Sidebar({ isOpen }) {
                 {secondaryItems.map((item) => (
                     <div 
                         key={item.id} 
+                        className={`sidebar-item ${item.id === currentActive ? 'active' : ''}`}
                         className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
                         onClick={() => {
                             if (item.path) navigate(item.path);
