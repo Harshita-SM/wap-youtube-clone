@@ -56,6 +56,7 @@ function Sidebar({ isOpen }) {
     };
 
     const currentActive = getActivePath();
+    const location = useLocation();
     const { subscriptions } = useApp();
 
     if (!isOpen) return null;
@@ -72,15 +73,27 @@ function Sidebar({ isOpen }) {
         subscriptions.includes(channel.name)
     );
 
+    const handleItemClick = (item) => {
+        if (item.path) {
+            navigate(item.path);
+        } else {
+            showToast(`${item.label} coming soon!`);
+        }
+    };
+
     return (
-        <aside className='sidebar'>
+        <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
             <div className="sidebar-section">
                 {primaryItems.map((item) => (
-                    <div
-                        key={item.id}
-
+                    <div 
+                        key={item.id} 
+                        className={`sidebar-item ${item.id === currentActive ? 'active' : ''}`}
+                        onClick={() => {
+                            if (item.id === 'home') navigate('/');
+                            if (item.id === 'shorts') navigate('/shorts');
+                        }}
                         className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
-                        onClick={() => navigate(item.path)}
+                        onClick={() => handleItemClick(item)}
                     >
                         <item.icon className='sidebar-icon' size={20} />
                         <span className='sidebar-text' style={{ fontSize: '14px' }}>{item.label}</span>
@@ -95,8 +108,9 @@ function Sidebar({ isOpen }) {
                     You <ChevronRightIcon size={18} style={{ marginTop: '2px' }} />
                 </div>
                 {secondaryItems.map((item) => (
-                    <div
-                        key={item.id}
+                    <div 
+                        key={item.id} 
+                        className={`sidebar-item ${item.id === currentActive ? 'active' : ''}`}
                         className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
                         onClick={() => {
                             if (item.path) navigate(item.path);

@@ -27,7 +27,8 @@ function Watch() {
         toggleSubscription, 
         isSubscribed,
         toggleWatchLater,
-        isWatchLater
+        isWatchLater,
+        showToast
     } = useApp();
 
     // 3. Find the specific video data from our mock database using the ID
@@ -97,8 +98,8 @@ function Watch() {
                                     padding: '8px 16px',
                                     borderRadius: '20px',
                                     border: 'none',
-                                    backgroundColor: subscribed ? '#f2f2f2' : '#0f0f0f',
-                                    color: subscribed ? '#0f0f0f' : '#ffffff',
+                                    backgroundColor: subscribed ? 'var(--hover-bg)' : 'var(--text)',
+                                    color: subscribed ? 'var(--text)' : 'var(--bg)',
                                     fontWeight: '500',
                                     cursor: 'pointer'
                                 }}
@@ -108,7 +109,7 @@ function Watch() {
                         </div>
 
                         <div className="video-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div className="action-group" style={{ display: 'flex', backgroundColor: '#f2f2f2', borderRadius: '20px', overflow: 'hidden' }}>
+                            <div className="action-group" style={{ display: 'flex', backgroundColor: 'var(--hover-bg)', borderRadius: '20px', overflow: 'hidden' }}>
                                 <button 
                                     onClick={() => toggleLike(video)}
                                     style={{ 
@@ -119,17 +120,26 @@ function Watch() {
                                         border: 'none', 
                                         background: 'none', 
                                         cursor: 'pointer', 
-                                        borderRight: '1px solid #d9d9d9',
+                                        borderRight: '1px solid var(--border)',
                                         color: liked ? '#065fd4' : 'inherit'
                                     }}
                                 >
                                     <ThumbsUpIcon size={20} /> <span style={{ fontWeight: '500' }}>{liked ? 'Liked' : '12K'}</span>
                                 </button>
-                                <button style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer' }}>
+                                <button 
+                                    onClick={() => showToast("Noted! We'll show less of this.")}
+                                    style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer' }}
+                                >
                                     <ThumbsDownIcon size={20} />
                                 </button>
                             </div>
-                            <button style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 16px', borderRadius: '20px', border: 'none', backgroundColor: '#f2f2f2', cursor: 'pointer' }}>
+                            <button 
+                                onClick={() => {
+                                    navigator.clipboard.writeText(window.location.href);
+                                    showToast("Link copied to clipboard!");
+                                }}
+                                style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 16px', borderRadius: '20px', border: 'none', backgroundColor: 'var(--hover-bg)', cursor: 'pointer' }}
+                            >
                                 <ShareIcon size={20} /> <span style={{ fontWeight: '500' }}>Share</span>
                             </button>
                             <button 
@@ -141,14 +151,17 @@ function Watch() {
                                     padding: '8px 16px', 
                                     borderRadius: '20px', 
                                     border: 'none', 
-                                    backgroundColor: savedLater ? '#e8f0fe' : '#f2f2f2', 
+                                    backgroundColor: savedLater ? '#e8f0fe' : 'var(--hover-bg)', 
                                     color: savedLater ? '#065fd4' : 'inherit',
                                     cursor: 'pointer' 
                                 }}
                             >
                                 <WatchLaterIcon size={20} /> <span style={{ fontWeight: '500' }}>{savedLater ? 'Saved' : 'Save'}</span>
                             </button>
-                            <button style={{ padding: '8px', borderRadius: '50%', border: 'none', backgroundColor: '#f2f2f2', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <button 
+                                onClick={() => showToast("More options coming soon!")}
+                                style={{ padding: '8px', borderRadius: '50%', border: 'none', backgroundColor: 'var(--hover-bg)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            >
                                 <MoreIcon size={20} />
                             </button>
                         </div>
